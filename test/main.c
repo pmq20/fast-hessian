@@ -7,24 +7,9 @@
 
 #include "hessian.h"
 
-extern const uint8_t libhessian_fixture[];
-
-static void expect(short condition, const char *reason)
-{
-	if (condition) {
-		fprintf(stderr, ".");
-	}
-	else {
-		fprintf(stderr, "x");
-		fprintf(stderr, "\nFAILED: %s\n", reason);
-		exit(1);
-	}
-	fflush(stderr);
-}
-
 int main(int argc, char const *argv[])
 {
-	expect(1);
+	test_int();
 	
 	return 0;
 }

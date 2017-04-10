@@ -5,11 +5,9 @@
  * For full terms see the included LICENSE file
  */
 
-#ifndef HESSIAN_H_B37B4F17
-#define HESSIAN_H_B37B4F17
+#include "hessian.h"
 
-#include <stdint.h>
-
-uint32_t hessian_decode_int(uint8_t *buffer);
-
-#endif /* end of include guard: HESSIAN_H_B37B4F17 */
+uint32_t hessian_decode_int(uint8_t *buffer)
+{
+	return 0;
+}

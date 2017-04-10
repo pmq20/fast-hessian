@@ -3,6 +3,6 @@ language: c
 script:
   - cmake --version
   - mkdir build && cd build
-  - cmake -DBUILD_TESTS=ON .. || exit $?
+  - cmake -DBUILD_TEST=ON .. || exit $?
   - cmake --build . || exit $?
   - ctest --verbose || exit $?
