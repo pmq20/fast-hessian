@@ -5,13 +5,9 @@
  * For full terms see the included LICENSE file
  */
 
-#include "hessian.h"
+#ifndef DECODE_H_9A447E20
+#define DECODE_H_9A447E20
 
-uint32_t hessian_decode_int(uint8_t *buffer)
-{
-	return 0;
-}
+uint32_t hessian_decode_int(uint8_t *buffer);
 
-size_t hessian_encode_int(int data, uint8_t *out){
-	return 0;
-}
+#endif /* end of include guard: DECODE_H_9A447E20 */

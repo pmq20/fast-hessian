@@ -5,13 +5,9 @@
  * For full terms see the included LICENSE file
  */
 
-#include "hessian.h"
+#ifndef ENCODE_H_6392FA14
+#define ENCODE_H_6392FA14
 
-uint32_t hessian_decode_int(uint8_t *buffer)
-{
-	return 0;
-}
+size_t hessian_encode_int(int data, uint8_t *out);
 
-size_t hessian_encode_int(int data, uint8_t *out){
-	return 0;
-}
+#endif /* end of include guard: ENCODE_H_6392FA14 */

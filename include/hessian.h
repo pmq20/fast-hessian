@@ -9,7 +9,9 @@
 #define HESSIAN_H_B37B4F17
 
 #include <stdint.h>
+#include <stddef.h>
 
-uint32_t hessian_decode_int(uint8_t *buffer);
+#include "hessian/encode.h"
+#include "hessian/decode.h"
 
 #endif /* end of include guard: HESSIAN_H_B37B4F17 */

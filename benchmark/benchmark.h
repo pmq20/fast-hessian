@@ -5,13 +5,9 @@
  * For full terms see the included LICENSE file
  */
 
-#include "hessian.h"
+#ifndef BENCHMARK_H_54E84DB0
+#define BENCHMARK_H_54E84DB0
 
-uint32_t hessian_decode_int(uint8_t *buffer)
-{
-	return 0;
-}
+void ops_sec(const char* title, void (*action_func)());
 
-size_t hessian_encode_int(int data, uint8_t *out){
-	return 0;
-}
+#endif /* end of include guard: BENCHMARK_H_54E84DB0 */
