@@ -9,5 +9,6 @@
 
 int main(int argc, char const *argv[])
 {
+	printf("== Libhessian Decode Benchmark ==");
 	return 0;
 }
