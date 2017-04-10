@@ -2,7 +2,7 @@
 
 Pure C implementation of Hessian 2.0 Serialization Protocol
 
-[![Build status: Linux and Darwin](https://travis-ci.org/pmq20/libhessian.svg?branch=master)](https://travis-ci.org/pmq20/libhessian)
+[![Build status](https://travis-ci.org/pmq20/libhessian.svg?branch=master)](https://travis-ci.org/pmq20/libhessian)
 
 ## See Also
 
