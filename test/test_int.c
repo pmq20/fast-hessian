@@ -29,22 +29,36 @@ static size_t buffer_length;
 
 void test_int()
 {
+	int32_t out;
+	
 	// it should read compact integers
-	EXPECT(0 == hessian_decode_int(buffer1));
-	EXPECT(-16 == hessian_decode_int(buffer2));
-	EXPECT(47 == hessian_decode_int(buffer3));
+	EXPECT(hessian_decode_int(buffer1, &out));
+	EXPECT(0 == out);
+	EXPECT(hessian_decode_int(buffer2, &out));
+	EXPECT(-16 == out);
+	EXPECT(hessian_decode_int(buffer3, &out));
+	EXPECT(47 == out);
 
-	EXPECT(0 == hessian_decode_int(buffer4));
-	EXPECT(-2048 == hessian_decode_int(buffer5));
-	EXPECT(-256 == hessian_decode_int(buffer6));
-	EXPECT(2047 == hessian_decode_int(buffer7));
+	EXPECT(hessian_decode_int(buffer4, &out));
+	EXPECT(0 == out);
+	EXPECT(hessian_decode_int(buffer5, &out));
+	EXPECT(-2048 == out);
+	EXPECT(hessian_decode_int(buffer6, &out));
+	EXPECT(-256 == out);
+	EXPECT(hessian_decode_int(buffer7, &out));
+	EXPECT(2047 == out);
 
-	EXPECT(0 == hessian_decode_int(buffer8));
-	EXPECT(-262144 == hessian_decode_int(buffer9));
-	EXPECT(262143 == hessian_decode_int(buffer10));
+	EXPECT(hessian_decode_int(buffer8, &out));
+	EXPECT(0 == out);
+	EXPECT(hessian_decode_int(buffer9, &out));
+	EXPECT(-262144 == out);
+	EXPECT(hessian_decode_int(buffer10, &out));
+	EXPECT(262143 == out);
 
-	EXPECT(0 == hessian_decode_int(buffer11));
-	EXPECT(300 == hessian_decode_int(buffer12));
+	EXPECT(hessian_decode_int(buffer11, &out));
+	EXPECT(0 == out);
+	EXPECT(hessian_decode_int(buffer12, &out));
+	EXPECT(300 == out);
 
 	// it should write number as java write
 	buffer_length = hessian_encode_int(0, buffer_out);
