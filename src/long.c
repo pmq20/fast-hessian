@@ -15,11 +15,11 @@ short hessian_decode_long(uint8_t *buffer, uint64_t *out)
 		return 1;
 	}
 	if (code >= 0xf0 && code <= 0xff) {
-		*out = ((code - 0xf8) << 8) + code[1];
+		*out = ((code - 0xf8) << 8) + out[1];
 		return 1;
 	}
 	if (code >= 0x38 && code <= 0x3f) {
-		*out =((code - 0x3c) << 16) + (code[1] << 8) + code[2];
+		*out =((code - 0x3c) << 16) + (out[1] << 8) + out[2];
 		return 1;
 	}
 	if (code === 0x59) {
