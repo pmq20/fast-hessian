@@ -8,6 +8,6 @@
 #ifndef ENCODE_H_6392FA14
 #define ENCODE_H_6392FA14
 
-size_t hessian_encode_int(uint32_t val, uint8_t *out);
+size_t hessian_encode_int(int32_t val, uint8_t *out);
 
 #endif /* end of include guard: ENCODE_H_6392FA14 */

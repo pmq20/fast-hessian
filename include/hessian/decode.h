@@ -8,6 +8,6 @@
 #ifndef DECODE_H_9A447E20
 #define DECODE_H_9A447E20
 
-uint32_t hessian_decode_int(uint8_t *buffer);
+int32_t hessian_decode_int(uint8_t *buffer);
 
 #endif /* end of include guard: DECODE_H_9A447E20 */

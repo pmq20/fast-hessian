@@ -48,35 +48,38 @@ void test_int()
 
 	// it should write number as java write
 	buffer_length = hessian_encode_int(0, buffer_out);
-	EXPECT(fixture_eq("number/0", buffer_out, buffer_length));
+	EXPECT(fixture_eq("number/0.bin", buffer_out, buffer_length));
 	buffer_length = hessian_encode_int(1, buffer_out);
-	EXPECT(fixture_eq("number/1", buffer_out, buffer_length));
+	EXPECT(fixture_eq("number/1.bin", buffer_out, buffer_length));
 	buffer_length = hessian_encode_int(10, buffer_out);
-	EXPECT(fixture_eq("number/10", buffer_out, buffer_length));
+	EXPECT(fixture_eq("number/10.bin", buffer_out, buffer_length));
 	buffer_length = hessian_encode_int(16, buffer_out);
-	EXPECT(fixture_eq("number/16", buffer_out, buffer_length));
+	EXPECT(fixture_eq("number/16.bin", buffer_out, buffer_length));
 	buffer_length = hessian_encode_int(2047, buffer_out);
-	EXPECT(fixture_eq("number/2047", buffer_out, buffer_length));
+	EXPECT(fixture_eq("number/2047.bin", buffer_out, buffer_length));
 	buffer_length = hessian_encode_int(255, buffer_out);
-	EXPECT(fixture_eq("number/255", buffer_out, buffer_length));
+	EXPECT(fixture_eq("number/255.bin", buffer_out, buffer_length));
 	buffer_length = hessian_encode_int(256, buffer_out);
-	EXPECT(fixture_eq("number/256", buffer_out, buffer_length));
+	EXPECT(fixture_eq("number/256.bin", buffer_out, buffer_length));
 	buffer_length = hessian_encode_int(262143, buffer_out);
-	EXPECT(fixture_eq("number/262143", buffer_out, buffer_length));
+	EXPECT(fixture_eq("number/262143.bin", buffer_out, buffer_length));
 	buffer_length = hessian_encode_int(262144, buffer_out);
-	EXPECT(fixture_eq("number/262144", buffer_out, buffer_length));
+	EXPECT(fixture_eq("number/262144.bin", buffer_out, buffer_length));
 	buffer_length = hessian_encode_int(46, buffer_out);
-	EXPECT(fixture_eq("number/46", buffer_out, buffer_length));
+	EXPECT(fixture_eq("number/46.bin", buffer_out, buffer_length));
 	buffer_length = hessian_encode_int(47, buffer_out);
-	EXPECT(fixture_eq("number/47", buffer_out, buffer_length));
+	EXPECT(fixture_eq("number/47.bin", buffer_out, buffer_length));
 	buffer_length = hessian_encode_int(-16, buffer_out);
-	EXPECT(fixture_eq("number/-16", buffer_out, buffer_length));
+	EXPECT(fixture_eq("number/-16.bin", buffer_out, buffer_length));
 	buffer_length = hessian_encode_int(-2048, buffer_out);
-	EXPECT(fixture_eq("number/-2048", buffer_out, buffer_length));
+	EXPECT(fixture_eq("number/-2048.bin", buffer_out, buffer_length));
 	buffer_length = hessian_encode_int(-256, buffer_out);
-	EXPECT(fixture_eq("number/-256", buffer_out, buffer_length));
+	EXPECT(fixture_eq("number/-256.bin", buffer_out, buffer_length));
 	buffer_length = hessian_encode_int(-262144, buffer_out);
-	EXPECT(fixture_eq("number/-262144", buffer_out, buffer_length));
+	EXPECT(fixture_eq("number/-262144.bin", buffer_out, buffer_length));
 	buffer_length = hessian_encode_int(-262145, buffer_out);
-	EXPECT(fixture_eq("number/-262145", buffer_out, buffer_length));
+	EXPECT(fixture_eq("number/-262145.bin", buffer_out, buffer_length));
+	
+	fprintf(stderr, "\n");
+	fflush(stderr);
 }

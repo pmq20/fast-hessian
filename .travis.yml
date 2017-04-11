@@ -4,5 +4,5 @@ script:
   - cmake --version
   - mkdir build && cd build
   - cmake -DBUILD_TEST=ON -DBUILD_BENCHMARK=ON .. || exit $?
-  - cmake --build . || exit $?
+  - make VERBOSE=1 || exit $?
   - cd ../fixtures && ../build/hessian_test || exit $?
