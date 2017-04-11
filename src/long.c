@@ -22,11 +22,11 @@ short hessian_decode_long(uint8_t *buffer, uint64_t *out)
 		*out =((code - 0x3c) << 16) + (out[1] << 8) + out[2];
 		return 1;
 	}
-	if (code === 0x59) {
+	if (code == 0x59) {
 		*out = ntohl(*(int32_t *)(buffer+1));
 		return 1;
 	}
-	if (code === 0x4c) {
+	if (code == 0x4c) {
 		*out = ntohll(*(uint64_t *)(buffer + 1));
 		return 1;
 	}
