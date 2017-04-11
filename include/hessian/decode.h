@@ -10,5 +10,6 @@
 
 short hessian_decode_int(uint8_t *buffer, int32_t *out);
 short hessian_decode_date(uint8_t *buffer, uint64_t *out);
+short hessian_decode_long(uint8_t *buffer, uint64_t *out);
 
 #endif /* end of include guard: DECODE_H_9A447E20 */

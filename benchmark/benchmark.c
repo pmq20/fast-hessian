@@ -9,11 +9,11 @@
 
 static void printfcomma(unsigned long long n) {
 	if (n < 1000) {
-		printf ("%llu", n);
+		printf("%llu", n);
 		return;
 	}
-	printfcomma (n/1000);
-	printf (",%03llu", n%1000);
+	printfcomma(n/1000);
+	printf(",%03llu", n%1000);
 }
 
 void ops_sec(const char* title, void (*action_func)())

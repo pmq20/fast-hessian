@@ -52,7 +52,7 @@ size_t hessian_encode_int(int32_t val, uint8_t *out)
 		return 2;
 	} else if (INT_SHORT_MIN <= val && val <= INT_SHORT_MAX) {
 		out[0] = (val >> 16) + INT_SHORT_ZERO;
-		*(int16_t *)(out + 1) = htons(val & 0xffff);
+		*(uint16_t *)(out + 1) = htons(val & 0xffff);
 		return 3;
 	} else {
 		out[0] = 0x49;

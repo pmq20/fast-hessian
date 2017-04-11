@@ -23,6 +23,12 @@ static void f2()
 	hessian_decode_date(buffer, &date);
 }
 
+static void f3()
+{
+	uint64_t x;
+	hessian_decode_long(buffer, &x);
+}
+
 int main(int argc, char const *argv[])
 {
 	struct timeval t;
@@ -33,6 +39,8 @@ int main(int argc, char const *argv[])
 	ops_sec("hessian2 decode: number", f1);
 	hessian_encode_date(t.tv_sec * 1e6 + t.tv_usec, buffer);
 	ops_sec("hessian2 decode: date", f2);
+	hessian_encode_long(300, buffer);
+	ops_sec("hessian2 decode: long", f3);
 
 	return 0;
 }
