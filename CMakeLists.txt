@@ -10,7 +10,7 @@ OPTION(BUILD_TEST	"Build the test of libhessian"		OFF)
 OPTION(BUILD_BENCHMARK	"Build the benchmark of libhessian"	OFF)
 
 INCLUDE_DIRECTORIES(src include)
-FILE(GLOB SRC_H include/hessian.h)
+FILE(GLOB SRC_H include/hessian.h include/hessian/*.h)
 FILE(GLOB SRC src/*.c)
 ADD_LIBRARY(hessian ${SRC_H} ${SRC})
 
