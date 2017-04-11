@@ -24,9 +24,9 @@ IF(BUILD_TEST)
 ENDIF()
 
 IF(BUILD_BENCHMARK)
-	ADD_EXECUTABLE(decode benchmark/benchmark.h benchmark/util.c benchmark/decode.c)
+	ADD_EXECUTABLE(decode benchmark/benchmark.h benchmark/benchmark.c benchmark/decode.c)
 	TARGET_LINK_LIBRARIES(decode hessian)
 
-	ADD_EXECUTABLE(encode benchmark/benchmark.h benchmark/util.c benchmark/encode.c)
+	ADD_EXECUTABLE(encode benchmark/benchmark.h benchmark/benchmark.c benchmark/encode.c)
 	TARGET_LINK_LIBRARIES(encode hessian)
 ENDIF()

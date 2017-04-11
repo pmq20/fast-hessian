@@ -12,6 +12,7 @@
 #include <stddef.h>
 #include <assert.h>
 #include <arpa/inet.h>
+#include <time.h>
 
 #include "hessian/encode.h"
 #include "hessian/decode.h"
