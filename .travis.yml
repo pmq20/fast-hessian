@@ -3,6 +3,9 @@ language: c
 script:
   - cmake --version
   - mkdir build && cd build
-  - cmake -DBUILD_TEST=ON -DBUILD_BENCHMARK=ON .. || exit $?
+  - cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TEST=ON -DBUILD_BENCHMARK=ON .. || exit $?
   - make VERBOSE=1 || exit $?
   - cd ../fixtures && ../build/hessian_test || exit $?
+  - ../build/encode || exit $?
+  - ../build/decode || exit $?
+  - git clone https://github.com/node-modules/hessian.js.git && cd hessian.js && npm install && npm run benchmark
