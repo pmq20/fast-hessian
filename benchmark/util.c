@@ -27,7 +27,7 @@ void ops_sec(const char* title, void (*action_func)())
 	double before_sec, after_sec;
 	size_t i;
 	
-	for(i = 0; i < 3; ++i)
+	for(i = 0; i < 10; ++i)
 	{
 		gettimeofday(&t, NULL);
 		before_sec = t.tv_sec + t.tv_usec * 1e-6;
@@ -41,6 +41,6 @@ void ops_sec(const char* title, void (*action_func)())
 	}
 	
 	printf("%s x ", title);
-	printfcomma(sum / 3);
+	printfcomma(sum / 10);
 	printf(" ops/sec\n");
 }
