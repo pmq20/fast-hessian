@@ -13,7 +13,8 @@ static uint8_t buffer[1024];
 
 static void f1()
 {
-	hessian.decode(buffer);
+	uint32_t x;
+	x = hessian_decode_int(buffer);
 }
 
 int main(int argc, char const *argv[])
