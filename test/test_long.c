@@ -6,4 +6,5 @@
  */
 
 #include "hessian.h"
+#include "test.h"
 
