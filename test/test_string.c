@@ -16,10 +16,10 @@ void test_string()
 	char out_str[1024];
 	size_t out_length;
 	
-	buffer_length = hessian_encode_string("Pure C implementation of Hessian 2.0 Serialization Protocol", 59, buffer_out);
+	buffer_length = hessian_encode_string("xxx1231231231231xxx123", 22, buffer_out);
 	EXPECT(hessian_decode_string(buffer_out, out_str, &out_length));
-	EXPECT(0 == strncmp(out_str, "Pure C implementation of Hessian 2.0 Serialization Protocol", 1024));
-	EXPECT(59 == out_length);
+	EXPECT(0 == memcmp(out_str, "xxx1231231231231xxx123", 22));
+	EXPECT(22 == out_length);
 	
 	fprintf(stderr, "\n");
 	fflush(stderr);

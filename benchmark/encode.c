@@ -24,9 +24,15 @@ static void f2()
 	gettimeofday(&t, NULL);
 	hessian_encode_date(t.tv_sec * 1e6 + t.tv_usec, buffer);
 }
+
 static void f3()
 {
 	hessian_encode_long(300, buffer);
+}
+
+static void f4()
+{
+	hessian_encode_string("xxx1231231231231xxx123", 22, buffer);
 }
 
 int main(int argc, char const *argv[])
@@ -36,6 +42,7 @@ int main(int argc, char const *argv[])
 	ops_sec("hessian2 encode: number", f1);
 	ops_sec("hessian2 encode: date", f2);
 	ops_sec("hessian2 encode: long", f3);
+	ops_sec("hessian2 encode: string", f4);
 
 	return 0;
 }
