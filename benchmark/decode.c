@@ -11,29 +11,30 @@
 
 static uint8_t buffer[1024];
 
+uint32_t out32;
+uint64_t out_date;
+uint64_t out64;
+char out_str[1024];
+size_t out_length;
+
 static void f1()
 {
-	uint32_t x;
-	hessian_decode_int(buffer, &x);
+	hessian_decode_int(buffer, &out32);
 }
 
 static void f2()
 {
-	uint64_t date;
-	hessian_decode_date(buffer, &date);
+	hessian_decode_date(buffer, &out_date);
 }
 
 static void f3()
 {
-	uint64_t x;
-	hessian_decode_long(buffer, &x);
+	hessian_decode_long(buffer, &out64);
 }
 
 static void f4()
 {
-	char out_str;
-	size_t out_length;
-	hessian_decode_string(buffer, &out_str, &out_length);
+	hessian_decode_string(buffer, out_str, &out_length);
 }
 
 int main(int argc, char const *argv[])

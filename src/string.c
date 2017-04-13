@@ -82,9 +82,6 @@ static short internal_decode_string(uint8_t *buffer, char *out_str, size_t *out_
 			delta_length = ntohs(*(uint16_t *)(buffer + 1));
 			memcpy(out_str + *out_length, buffer + 2, delta_length);
 			*out_length = *out_length + delta_length;
-			if (!result) {
-				return 0;
-			}
 			while (!*is_last_chunk) {
 				result = internal_decode_string(buffer, out_str, out_length, is_last_chunk);
 				if (!result) {
