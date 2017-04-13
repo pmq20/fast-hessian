@@ -38,7 +38,7 @@ size_t hessian_encode_string(char *str, size_t length, uint8_t *out)
 
 	memcpy(out + ret, str + strOffset, length - strOffset);
 	ret += length - strOffset;
-	return this;
+	return ret;
 }
 
 short hessian_decode_string(uint8_t *buffer, char *out_str, size_t *out_length)

@@ -14,5 +14,6 @@ int main(int argc, char const *argv[])
 	test_date();
 	test_long();
 	test_string();
+
 	return 0;
 }
