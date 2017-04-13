@@ -41,7 +41,7 @@ size_t hessian_encode_string(char *str, size_t length, uint8_t *out)
 	return this;
 }
 
-short hessian_encode_string(uint8_t *buffer, char *out_str, size_t *out_length)
+short hessian_decode_string(uint8_t *buffer, char *out_str, size_t *out_length)
 {
 	
 }

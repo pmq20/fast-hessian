@@ -8,3 +8,6 @@
 #include "hessian.h"
 #include "test.h"
 
+void test_long()
+{
+}
