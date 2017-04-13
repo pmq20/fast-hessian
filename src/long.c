@@ -9,7 +9,7 @@
 
 short hessian_decode_long(uint8_t *buffer, uint64_t *out)
 {
-	uint8_t code = out[0];
+	uint8_t code = buffer[0];
 	if (code >= 0xd8 && code <= 0xef) {
 		*out = code - 0xe0;
 		return 1;
