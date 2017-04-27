@@ -8,6 +8,7 @@
 #ifndef ENCODE_H_6392FA14
 #define ENCODE_H_6392FA14
 
+short hessian_encode_null(uint8_t **out, size_t *len);
 short hessian_encode_int(int32_t val, uint8_t **out, size_t *len);
 short hessian_encode_date(uint64_t milliEpoch, uint8_t **out, size_t *len);
 short hessian_encode_long(int64_t val, uint8_t **out, size_t *len);

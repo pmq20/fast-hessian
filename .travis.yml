@@ -1,8 +1,15 @@
 language: c
 
+os:
+  - linux
+  - osx
+
+compiler:
+  - gcc
+  - clang
+
 script:
   - cmake --version
   - mkdir build && cd build
-  - cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TEST=ON -DBUILD_BENCHMARK=ON .. || exit $?
-  - make VERBOSE=1 || exit $?
-  - cd ../fixtures && ../build/hessian_test || exit $?
+  - cmake -DCMAKE_BUILD_TYPE=Debug .. || exit $?
+  - cmake --build . --config Debug || exit $?
