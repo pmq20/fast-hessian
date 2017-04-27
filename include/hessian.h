@@ -10,18 +10,10 @@
 
 #include <stdint.h>
 #include <stddef.h>
-#include <assert.h>
-#include <arpa/inet.h>
 #include <time.h>
 #include <string.h>
 
 #include "hessian/encode.h"
 #include "hessian/decode.h"
-
-#ifdef __linux__
-#include <byteswap.h>
-#define htonll __bswap_64
-#define ntohll __bswap_64
-#endif
 
 #endif /* end of include guard: HESSIAN_H_B37B4F17 */

@@ -6,6 +6,7 @@
  */
 
 #include "hessian.h"
+#include "hessian-impl.h"
 
 size_t hessian_encode_string(char *str, size_t length, uint8_t *out)
 {

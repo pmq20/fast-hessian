@@ -6,6 +6,7 @@
  */
 
 #include "hessian.h"
+#include "hessian-impl.h"
 
 short hessian_decode_date(uint8_t *buffer, uint64_t *out)
 {

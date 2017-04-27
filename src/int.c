@@ -6,6 +6,7 @@
  */
 
 #include "hessian.h"
+#include "hessian-impl.h"
 
 #define INT_DIRECT_MIN -0x10
 #define INT_DIRECT_MAX 0x2f
