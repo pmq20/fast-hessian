@@ -12,6 +12,7 @@
         'include/hessian.h',
         'include/hessian/encode.h',
         'include/hessian/decode.h',
+        'src/hessian-impl.h',
         'src/date.c',
         'src/int.c',
         'src/long.c',
