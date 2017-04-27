@@ -8,38 +8,67 @@
 #include "hessian.h"
 #include "hessian-impl.h"
 
-size_t hessian_encode_string(char *str, size_t length, uint8_t *out)
+static const size_t sublen = 0x8000;
+static const uint16_t sublen_ns = 1; // htons(sublen)
+
+short hessian_encode_string(char *str, size_t length, uint8_t **out, size_t *len)
 {
 	size_t strOffset = 0;
-	size_t sublen;
-	size_t ret = 0;
-	while (length > 0x8000) {
-		sublen = 0x8000;
+        size_t malloc_len = 0;
+        size_t orig_length = length;
 
-		out[ret++] = 0x52;
-		*(uint16_t *)(out + ret) = htons(sublen);
-		ret += 2;
-		memcpy(out + ret, str + strOffset, sublen);
-		ret += sublen;
+        // Step 1. calculate malloc_len
+        if (0 == length % sublen) {
+                malloc_len = (3 + sublen) * (length / sublen - 1);
+                length = sublen;
+        } else {
+                malloc_len = (3 + sublen) * (length / sublen);
+                length %= sublen;
+        }
+        if (length <= 31) {
+                ++malloc_len;
+	} else if (length <= 1023) {
+                malloc_len += 2;
+	} else {
+                malloc_len += 3;
+	}
+        malloc_len += length;
+
+        // Step 2. Do the malloc
+        *out = malloc(malloc_len);
+        if (NULL == *out) {
+                return 0;
+        }
+        
+        // Step 3. Write the data
+        length = orig_length;
+	*len = 0;
+	while (length > 0x8000) {
+		(*out)[(*len)++] = 0x52;
+		*(uint16_t *)(*out + *len) = sublen_ns;
+		*len += 2;
+		memcpy(*out + *len, str + strOffset, sublen);
+		*len += sublen;
 
 		length -= sublen;
 		strOffset += sublen;
 	}
 
 	if (length <= 31) {
-		out[ret++] = length;
+		(*out)[(*len)++] = length;
 	} else if (length <= 1023) {
-		out[ret++] = 48 + (length >> 8);
-		out[ret++] = length; // Integer overflow and wrapping assumed
+		(*out)[(*len)++] = 48 + (length >> 8);
+		(*out)[(*len)++] = length; // Integer overflow and wrapping assumed
 	} else {
-		out[ret++] = 'S';
-		out[ret++] = (length >> 8);
-		out[ret++] = length; // Integer overflow and wrapping assumed
+		(*out)[(*len)++] = 'S';
+		(*out)[(*len)++] = (length >> 8);
+		(*out)[(*len)++] = length; // Integer overflow and wrapping assumed
 	}
 
-	memcpy(out + ret, str + strOffset, length - strOffset);
-	ret += length - strOffset;
-	return ret;
+	memcpy(*out + *len, str + strOffset, length);
+	*len += length;
+        assert(malloc_len == *len);
+        return 1;
 }
 
 static short internal_decode_string(uint8_t *buffer, char *out_str, size_t *out_length, short *is_last_chunk)

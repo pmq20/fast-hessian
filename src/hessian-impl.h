@@ -20,6 +20,8 @@
 #define ntohll __bswap_64
 #endif
 
+#include <string.h>
 #include <assert.h>
+#include <stdlib.h>
 
 #endif /* end of include guard: LIBHESSIAN_H_B37B4F17 */

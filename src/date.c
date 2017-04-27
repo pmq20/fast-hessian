@@ -22,17 +22,27 @@ short hessian_decode_date(uint8_t *buffer, uint64_t *out)
 	return 0;
 }
 
-size_t hessian_encode_date(uint64_t milliEpoch, uint8_t *out)
+short hessian_encode_date(uint64_t milliEpoch, uint8_t **out, size_t *len)
 {
 	if ((milliEpoch % 60000) == 0) {
-		uint32_t minutes = milliEpoch / 60000;
-		if (minutes >= -0x80000000 && minutes <= 0x7fffffff) {
-			out[0] = 0x4b;
-			*(int32_t *)(out + 1) = htonl(minutes);
-			return 5;
+		uint64_t minutes = milliEpoch / 60000;
+		if (minutes <= 0x7fffffff) {
+			*len = 5;
+                        *out = malloc(*len);
+                        if (NULL == *out) {
+                                return 0;
+                        }
+			*out[0] = 0x4b;
+			*(int32_t *)(*out + 1) = htonl((uint32_t)minutes);
+                        return 1;
 		}
 	}
-	out[0] = 0x4a;
-	*(int64_t *)(out + 1) = htonll(milliEpoch);
-	return 9;
+	*len = 9;
+        *out = malloc(*len);
+        if (NULL == *out) {
+                return 0;
+        }
+	*out[0] = 0x4a;
+	*(int64_t *)(*out + 1) = htonll(milliEpoch);
+        return 1;
 }

@@ -42,22 +42,42 @@ short hessian_decode_int(uint8_t *buffer, int32_t *out)
 	return 0;
 }
 
-size_t hessian_encode_int(int32_t val, uint8_t *out)
+short hessian_encode_int(int32_t val, uint8_t **out, size_t *len)
 {
 	if (INT_DIRECT_MIN <= val && val <= INT_DIRECT_MAX) {
-		out[0] = val + INT_ZERO;
-		return 1;
+		*len = 1;
+                *out = malloc(*len);
+                if (NULL == *out) {
+                        return 0;
+                }
+		*out[0] = val + INT_ZERO;
+                return 1;
 	} else if (INT_BYTE_MIN <= val && val <= INT_BYTE_MAX) {
-		out[1] = val & 0xff;
-		out[0] = (val >> 8) + INT_BYTE_ZERO;
-		return 2;
+		*len = 2;
+                *out = malloc(*len);
+                if (NULL == *out) {
+                        return 0;
+                }
+		*out[1] = val & 0xff;
+		*out[0] = (val >> 8) + INT_BYTE_ZERO;
+                return 1;
 	} else if (INT_SHORT_MIN <= val && val <= INT_SHORT_MAX) {
-		out[0] = (val >> 16) + INT_SHORT_ZERO;
-		*(uint16_t *)(out + 1) = htons(val & 0xffff);
-		return 3;
+		*len = 3;
+                *out = malloc(*len);
+                if (NULL == *out) {
+                        return 0;
+                }
+		*out[0] = (val >> 16) + INT_SHORT_ZERO;
+		*(uint16_t *)(*out + 1) = htons(val & 0xffff);
+                return 1;
 	} else {
-		out[0] = 0x49;
-		*(int32_t *)(out+1) = htonl(val);
-		return 5;
+		*len = 5;
+                *out = malloc(*len);
+                if (NULL == *out) {
+                        return 0;
+                }
+		*out[0] = 0x49;
+		*(int32_t *)(*out+1) = htonl(val);
+                return 1;
 	}
 }

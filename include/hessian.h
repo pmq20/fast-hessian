@@ -10,8 +10,6 @@
 
 #include <stdint.h>
 #include <stddef.h>
-#include <time.h>
-#include <string.h>
 
 #include "hessian/encode.h"
 #include "hessian/decode.h"
