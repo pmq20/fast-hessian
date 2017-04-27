@@ -19,6 +19,6 @@ build_script:
 
     cd build
 
-    cmake -DCMAKE_BUILD_TYPE=Debug -G"$env:GENERATOR" ..
+    cmake -G"$env:GENERATOR" ..
 
     cmake --build . --config Debug

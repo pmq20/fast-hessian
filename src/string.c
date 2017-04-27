@@ -55,14 +55,14 @@ short hessian_encode_string(char *str, size_t length, uint8_t **out, size_t *len
 	}
 
 	if (length <= 31) {
-		(*out)[(*len)++] = length;
+		(*out)[(*len)++] = (uint8_t)(length);
 	} else if (length <= 1023) {
-		(*out)[(*len)++] = 48 + (length >> 8);
-		(*out)[(*len)++] = length; // Integer overflow and wrapping assumed
+		(*out)[(*len)++] = (uint8_t)(48 + (length >> 8));
+		(*out)[(*len)++] = (uint8_t)(length); // Integer overflow and wrapping assumed
 	} else {
 		(*out)[(*len)++] = 'S';
-		(*out)[(*len)++] = (length >> 8);
-		(*out)[(*len)++] = length; // Integer overflow and wrapping assumed
+		(*out)[(*len)++] = (uint8_t)((length >> 8));
+		(*out)[(*len)++] = (uint8_t)(length); // Integer overflow and wrapping assumed
 	}
 
 	memcpy(*out + *len, str + strOffset, length);

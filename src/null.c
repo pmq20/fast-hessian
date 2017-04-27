@@ -20,6 +20,6 @@ short hessian_encode_null(uint8_t **out, size_t *len)
         if (NULL == *out) {
                 return 0;
         }
-        out[0] = 'N';
+        *out[0] = 'N';
         return 1;
 }
