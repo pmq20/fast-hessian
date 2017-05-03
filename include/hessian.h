@@ -30,4 +30,7 @@
 #include "hessian/encode.h"
 #include "hessian/decode.h"
 
+void hessian_encode(const v8::FunctionCallbackInfo<v8::Value>& args);
+void hessian_decode(const v8::FunctionCallbackInfo<v8::Value>& args);
+
 #endif /* end of include guard: HESSIAN_H_B37B4F17 */
