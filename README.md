@@ -1,7 +1,6 @@
 # V8 Hessian
 
-Add Hessian 2.0 serialization and deserialization support to Google V8 Edit
-Add topics
+Add Hessian 2.0 serialization and deserialization support to Google V8.
 
 ## See Also
 
