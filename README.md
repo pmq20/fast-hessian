@@ -1,6 +1,6 @@
-# V8 Hessian
+# Fast Hessian
 
-Add Hessian 2.0 serialization and deserialization support to Google V8.
+High-performance C++ implementation of Hessian 2.0 Serialization Protocol for Node.js.
 
 ## See Also
 
