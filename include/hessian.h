@@ -8,6 +8,22 @@
 #ifndef HESSIAN_H_B37B4F17
 #define HESSIAN_H_B37B4F17
 
+#ifdef _WIN32
+#include <Winsock2.h>
+#else
+#include <arpa/inet.h>
+#endif
+
+#ifdef __linux__
+#include <byteswap.h>
+#define htonll __bswap_64
+#define ntohll __bswap_64
+#endif
+
+#include <string.h>
+#include <assert.h>
+#include <stdlib.h>
+
 #include <stdint.h>
 #include <stddef.h>
 
