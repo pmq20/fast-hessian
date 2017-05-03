@@ -2,7 +2,7 @@
 
 High-performance C++ implementation of Hessian 2.0 Serialization Protocol for Node.js.
 
-External Javascript API are 100% compatible with [Hessian.js](https://github.com/node-modules/hessian.js), serving as a drop-in replacement. Only the Hessian 2.0 part is re-implemented in C++; Hessian 1.0 is untouched with its original JS implementation from Hessian.js. 
+External Javascript API are 100% compatible with [Hessian.js](https://github.com/node-modules/hessian.js), serving as a drop-in replacement. Only the Hessian 2.0 part is re-implemented in C++; Hessian 1.0 is untouched with its original implementation. 
 
 ## Compete with Hessian.js
 
