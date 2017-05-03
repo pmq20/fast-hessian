@@ -30,6 +30,8 @@
 #include "hessian/encode.h"
 #include "hessian/decode.h"
 
+#include "node.h"
+
 void hessian_encode(const v8::FunctionCallbackInfo<v8::Value>& args);
 void hessian_decode(const v8::FunctionCallbackInfo<v8::Value>& args);
 

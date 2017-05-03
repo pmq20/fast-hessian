@@ -7,9 +7,11 @@
 
 #include "hessian.h"
 
-void hessian_encode(const FunctionCallbackInfo<Value>& args) {
-	Environment* env = Environment::GetCurrent(args);
-	Local<Object> vbuf;
+#include "env.h"
+
+void hessian_encode(const v8::FunctionCallbackInfo<v8::Value>& args) {
+	node::Environment* env = node::Environment::GetCurrent(args);
+	v8::Local<v8::Object> vbuf;
 	char *data;
 	size_t length;
 	short ret;
@@ -27,7 +29,7 @@ void hessian_encode(const FunctionCallbackInfo<Value>& args) {
 		double x = args[0].As<v8::Date>()->ValueOf();
 		ret = hessian_encode_date((uint64_t)x, (uint8_t**)(&data), &length);
 	} else if (args[0]->IsString()) {
-		Local<String> string = args[0].As<String>();
+		v8::Local<v8::String> string = args[0].As<v8::String>();
 
 	} else {
 		// TODO throw error
@@ -37,9 +39,9 @@ void hessian_encode(const FunctionCallbackInfo<Value>& args) {
 		// TODO throw error
 		return;
 	}
-	vbuf = Buffer::New(env, data, length).ToLocalChecked();
+	vbuf = node::Buffer::New(env, data, length).ToLocalChecked();
 	return args.GetReturnValue().Set(vbuf);
 }
 
-void hessian_decode(const FunctionCallbackInfo<Value>& args) {
+void hessian_decode(const v8::FunctionCallbackInfo<v8::Value>& args) {
 }

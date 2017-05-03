@@ -6,7 +6,6 @@
  */
 
 #include "hessian.h"
-#include "hessian-impl.h"
 
 short hessian_decode_long(uint8_t *buffer, int64_t *out)
 {
@@ -38,7 +37,7 @@ short hessian_encode_long(int64_t val, uint8_t **out, size_t *len)
 {
 	if (val >= -8 && val <= 15) {
 		*len = 1;
-                *out = malloc(*len);
+                *out = (uint8_t*)malloc(*len);
                 if (NULL == *out) {
                         return 0;
                 }
@@ -46,7 +45,7 @@ short hessian_encode_long(int64_t val, uint8_t **out, size_t *len)
                 return 1;
         } else if (val >= -2048 && val <= 2047) {
 		*len = 2;
-                *out = malloc(*len);
+                *out = (uint8_t*)malloc(*len);
                 if (NULL == *out) {
                         return 0;
                 }
@@ -55,7 +54,7 @@ short hessian_encode_long(int64_t val, uint8_t **out, size_t *len)
                 return 1;
         } else if (val >= -262144 && val <= 262143) {
 		*len = 3;
-                *out = malloc(*len);
+                *out = (uint8_t*)malloc(*len);
                 if (NULL == *out) {
                         return 0;
                 }
@@ -64,7 +63,7 @@ short hessian_encode_long(int64_t val, uint8_t **out, size_t *len)
                 return 1;
         } else if (val >= -0x80000000LL && val <= 0x7fffffffLL) {
 		*len = 5;
-                *out = malloc(*len);
+                *out = (uint8_t*)malloc(*len);
                 if (NULL == *out) {
                         return 0;
                 }
@@ -73,7 +72,7 @@ short hessian_encode_long(int64_t val, uint8_t **out, size_t *len)
                 return 1;
 	} else {
 		*len = 9;
-                *out = malloc(*len);
+                *out = (uint8_t*)malloc(*len);
                 if (NULL == *out) {
                         return 0;
                 }

@@ -6,7 +6,6 @@
  */
 
 #include "hessian.h"
-#include "hessian-impl.h"
 
 #define INT_DIRECT_MIN -0x10
 #define INT_DIRECT_MAX 0x2f
@@ -46,7 +45,7 @@ short hessian_encode_int(int32_t val, uint8_t **out, size_t *len)
 {
 	if (INT_DIRECT_MIN <= val && val <= INT_DIRECT_MAX) {
 		*len = 1;
-                *out = malloc(*len);
+                *out = (uint8_t*)malloc(*len);
                 if (NULL == *out) {
                         return 0;
                 }
@@ -54,7 +53,7 @@ short hessian_encode_int(int32_t val, uint8_t **out, size_t *len)
                 return 1;
 	} else if (INT_BYTE_MIN <= val && val <= INT_BYTE_MAX) {
 		*len = 2;
-                *out = malloc(*len);
+                *out = (uint8_t*)malloc(*len);
                 if (NULL == *out) {
                         return 0;
                 }
@@ -63,7 +62,7 @@ short hessian_encode_int(int32_t val, uint8_t **out, size_t *len)
                 return 1;
 	} else if (INT_SHORT_MIN <= val && val <= INT_SHORT_MAX) {
 		*len = 3;
-                *out = malloc(*len);
+                *out = (uint8_t*)malloc(*len);
                 if (NULL == *out) {
                         return 0;
                 }
@@ -72,7 +71,7 @@ short hessian_encode_int(int32_t val, uint8_t **out, size_t *len)
                 return 1;
 	} else {
 		*len = 5;
-                *out = malloc(*len);
+                *out = (uint8_t*)malloc(*len);
                 if (NULL == *out) {
                         return 0;
                 }

@@ -6,7 +6,6 @@
  */
 
 #include "hessian.h"
-#include "hessian-impl.h"
 
 static const size_t sublen = 0x8000;
 static const uint16_t sublen_ns = 1; // htons(sublen)
@@ -35,7 +34,7 @@ short hessian_encode_string(char *str, size_t length, uint8_t **out, size_t *len
         malloc_len += length;
 
         // Step 2. Do the malloc
-        *out = malloc(malloc_len);
+        *out = (uint8_t*)malloc(malloc_len);
         if (NULL == *out) {
                 return 0;
         }

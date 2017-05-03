@@ -6,7 +6,6 @@
  */
 
 #include "hessian.h"
-#include "hessian-impl.h"
 
 short hessian_decode_date(uint8_t *buffer, uint64_t *out)
 {
@@ -28,7 +27,7 @@ short hessian_encode_date(uint64_t milliEpoch, uint8_t **out, size_t *len)
 		uint64_t minutes = milliEpoch / 60000;
 		if (minutes <= 0x7fffffff) {
 			*len = 5;
-                        *out = malloc(*len);
+                        *out = (uint8_t*)malloc(*len);
                         if (NULL == *out) {
                                 return 0;
                         }
@@ -38,7 +37,7 @@ short hessian_encode_date(uint64_t milliEpoch, uint8_t **out, size_t *len)
 		}
 	}
 	*len = 9;
-        *out = malloc(*len);
+        *out = (uint8_t*)malloc(*len);
         if (NULL == *out) {
                 return 0;
         }

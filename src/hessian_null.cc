@@ -6,7 +6,6 @@
  */
 
 #include "hessian.h"
-#include "hessian-impl.h"
 
 short hessian_decode_null(uint8_t *buffer)
 {
@@ -16,7 +15,7 @@ short hessian_decode_null(uint8_t *buffer)
 short hessian_encode_null(uint8_t **out, size_t *len)
 {
         *len = 1;
-        *out = malloc(*len);
+        *out = (uint8_t*)malloc(*len);
         if (NULL == *out) {
                 return 0;
         }
