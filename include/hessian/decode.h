@@ -1,12 +1,14 @@
 /*
  * Copyright (c) 2017 Minqi Pan <pmq2001@gmail.com>
  *
- * This file is part of v8-hessian, distributed under the MIT License
+ * This file is part of fast-hessian, distributed under the MIT License
  * For full terms see the included LICENSE file
  */
 
 #ifndef HESSIAN_DECODE_H_9A447E20
 #define HESSIAN_DECODE_H_9A447E20
+
+#include "node.h"
 
 short hessian_decode_null(uint8_t *buffer);
 short hessian_decode_int(uint8_t *buffer, int32_t *out);

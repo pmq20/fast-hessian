@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2017 Minqi Pan <pmq2001@gmail.com>
  *
- * This file is part of v8-hessian, distributed under the MIT License
+ * This file is part of fast-hessian, distributed under the MIT License
  * For full terms see the included LICENSE file
  */
 
@@ -10,64 +10,10 @@
 static const size_t sublen = 0x8000;
 static const uint16_t sublen_ns = 1; // htons(sublen)
 
-short hessian_encode_string(char *str, size_t length, uint8_t **out, size_t *len)
+short hessian_encode_string(v8::Local<v8::String> &str, uint8_t **out, size_t *len)
 {
-	size_t strOffset = 0;
-        size_t malloc_len = 0;
-        size_t orig_length = length;
+	int length = str->Length();
 
-        // Step 1. calculate malloc_len
-        if (0 == length % sublen) {
-                malloc_len = (3 + sublen) * (length / sublen - 1);
-                length = sublen;
-        } else {
-                malloc_len = (3 + sublen) * (length / sublen);
-                length %= sublen;
-        }
-        if (length <= 31) {
-                ++malloc_len;
-	} else if (length <= 1023) {
-                malloc_len += 2;
-	} else {
-                malloc_len += 3;
-	}
-        malloc_len += length;
-
-        // Step 2. Do the malloc
-        *out = (uint8_t*)malloc(malloc_len);
-        if (NULL == *out) {
-                return 0;
-        }
-        
-        // Step 3. Write the data
-        length = orig_length;
-	*len = 0;
-	while (length > 0x8000) {
-		(*out)[(*len)++] = 0x52;
-		*(uint16_t *)(*out + *len) = sublen_ns;
-		*len += 2;
-		memcpy(*out + *len, str + strOffset, sublen);
-		*len += sublen;
-
-		length -= sublen;
-		strOffset += sublen;
-	}
-
-	if (length <= 31) {
-		(*out)[(*len)++] = (uint8_t)(length);
-	} else if (length <= 1023) {
-		(*out)[(*len)++] = (uint8_t)(48 + (length >> 8));
-		(*out)[(*len)++] = (uint8_t)(length); // Integer overflow and wrapping assumed
-	} else {
-		(*out)[(*len)++] = 'S';
-		(*out)[(*len)++] = (uint8_t)((length >> 8));
-		(*out)[(*len)++] = (uint8_t)(length); // Integer overflow and wrapping assumed
-	}
-
-	memcpy(*out + *len, str + strOffset, length);
-	*len += length;
-        assert(malloc_len == *len);
-        return 1;
 }
 
 static short internal_decode_string(uint8_t *buffer, char *out_str, size_t *out_length, short *is_last_chunk)
