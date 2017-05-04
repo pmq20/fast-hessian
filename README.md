@@ -6,7 +6,7 @@ External Javascript API are 100% compatible with [Hessian.js](https://github.com
 
 ## Compete with Hessian.js
 
-TODO
+**Environment: node 8.0.0-pre + v8 5.7.492.69**
 
 ## See Also
 
