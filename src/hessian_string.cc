@@ -12,8 +12,40 @@ static const uint16_t sublen_ns = 1; // htons(sublen)
 
 short hessian_encode_string(v8::Local<v8::String> &str, uint8_t **out, size_t *len)
 {
+	size_t index = 0;
 	int length = str->Length();
+	int capacity = 3 * length + 10; // TODO 10?
+	*out = (uint8_t*)malloc(capacity);
+	if (NULL == *out) {
+		return 0;
+	}
 
+	// TODO
+	assert(length <= 0x8000);
+
+	if (length <= 31) {
+		(*out)[index++] = (uint8_t)(length);
+	} else if (length <= 1023) {
+		(*out)[index++] = (uint8_t)(48 + (length >> 8));
+		(*out)[index++] = (uint8_t)(length); // Integer overflow and wrapping assumed
+	} else {
+		(*out)[index++] = 'S';
+		(*out)[index++] = (uint8_t)((length >> 8));
+		(*out)[index++] = (uint8_t)(length); // Integer overflow and wrapping assumed
+	}
+
+	int flags = v8::String::HINT_MANY_WRITES_EXPECTED |
+		    v8::String::NO_NULL_TERMINATION |
+		    v8::String::REPLACE_INVALID_UTF8;
+
+	// TODO encoded as CESU-8
+	int nbytes = str->WriteUtf8((char *)(*out), capacity, NULL, flags);
+	*len = index + nbytes;
+	*out = (uint8_t*)realloc(*out, *len);
+	if (NULL == *out) {
+		return 0;
+	}
+	return 1;
 }
 
 static short internal_decode_string(uint8_t *buffer, char *out_str, size_t *out_length, short *is_last_chunk)

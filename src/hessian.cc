@@ -30,7 +30,7 @@ void hessian_encode(const v8::FunctionCallbackInfo<v8::Value>& args) {
 		ret = hessian_encode_date((uint64_t)x, (uint8_t**)(&data), &length);
 	} else if (args[0]->IsString()) {
 		v8::Local<v8::String> string = args[0].As<v8::String>();
-
+		ret = hessian_encode_string(string, (uint8_t**)(&data), &length);
 	} else {
 		// TODO throw error
 		return;
