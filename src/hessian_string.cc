@@ -39,7 +39,7 @@ short hessian_encode_string(v8::Local<v8::String> &str, uint8_t **out, size_t *l
 		    v8::String::REPLACE_INVALID_UTF8;
 
 	// TODO encoded as CESU-8
-	int nbytes = str->WriteUtf8((char *)(*out), capacity, NULL, flags);
+	int nbytes = str->WriteUtf8((char *)(*out + index), capacity, NULL, flags);
 	*len = index + nbytes;
 	*out = (uint8_t*)realloc(*out, *len);
 	if (NULL == *out) {
