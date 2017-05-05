@@ -6,7 +6,6 @@
  */
 
 #include "hessian.h"
-#include "env.h"
 
 short hessian_encode_string(v8::Local<v8::String> &str, uint8_t **out, size_t *len)
 {

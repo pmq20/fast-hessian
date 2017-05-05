@@ -180,18 +180,18 @@ suite
 // .add('hessian2 decode with type: complex object', function() {
 //   hessian.decode(complexObjectBuf2, '2.0', true);
 // })
-//
-// .on('cycle', function(event) {
-//   benchmarks.add(event.target);
-// })
-// .on('start', function(event) {
-//   console.log('\n  Hessian Decode Benchmark\n  node version: %s, date: %s\n  Starting...',
-//     process.version, Date());
-// })
-// .on('complete', function done() {
-//   benchmarks.log();
-// })
-// .run({ 'async': false });
+
+.on('cycle', function(event) {
+  benchmarks.add(event.target);
+})
+.on('start', function(event) {
+  console.log('\n  Hessian Decode Benchmark\n  node version: %s, date: %s\n  Starting...',
+    process.version, Date());
+})
+.on('complete', function done() {
+  benchmarks.log();
+})
+.run({ 'async': false });
 //
 //  // Hessian Decode Benchmark
 //  //  node version: v0.11.12, date: Wed Jun 25 2014 10:46:26 GMT+0800 (CST)

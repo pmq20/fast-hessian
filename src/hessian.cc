@@ -7,8 +7,6 @@
 
 #include "hessian.h"
 
-#include "env.h"
-
 void hessian_encode(const v8::FunctionCallbackInfo<v8::Value>& args) {
 	node::Environment* env = node::Environment::GetCurrent(args);
 	v8::Local<v8::Object> vbuf;

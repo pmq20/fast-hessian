@@ -8,6 +8,26 @@ External Javascript API are 100% compatible with [Hessian.js](https://github.com
 
 **Environment: node 8.0.0-pre + v8 5.7.492.69**
 
+## Hessian.js
+
+> hessian2 encode: number x 1,119,720 ops/sec ±1.39% (85 runs sampled)
+> hessian2 encode: date   x   721,557 ops/sec ±1.16% (88 runs sampled)
+> hessian2 encode: string x   841,823 ops/sec ±1.55% (83 runs sampled)
+
+> hessian2 decode: number x 2,360,712 ops/sec ±1.16% (86 runs sampled)
+> hessian2 decode: date   x   510,387 ops/sec ±1.16% (87 runs sampled)
+> hessian2 decode: string x   253,469 ops/sec ±1.17% (89 runs sampled)
+
+## Fast Hessian
+
+> hessian2 encode: number x 1,141,956 ops/sec ±1.37% (80 runs sampled)
+> hessian2 encode: date   x   946,933 ops/sec ±1.10% (82 runs sampled)
+> hessian2 encode: string x   542,354 ops/sec ±8.74% (52 runs sampled)
+
+> hessian2 decode: number x 10,770,598 ops/sec ±1.21% (89 runs sampled)
+> hessian2 decode: date   x  3,856,539 ops/sec ±1.38% (90 runs sampled)
+> hessian2 decode: string x  1,794,515 ops/sec ±4.69% (60 runs sampled)
+
 ## API
 
 There are only 2 top level API, which internally calls different types of encoding and decoding API automatically.

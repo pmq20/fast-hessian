@@ -9,5 +9,5 @@
 
 short hessian_decode_map(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)
 {
-	
+	return 0;
 }

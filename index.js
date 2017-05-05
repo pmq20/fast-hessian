@@ -29,14 +29,14 @@ exports.decode = function decode(buf, version, withType) {
   withType = !!withType;
 
   if (version === '2.0') {
-    return process.libhessian_decode(buf, withType);
+    return process.hessian_decode(buf, withType);
   }
   return new DecoderV1(buf).read(withType);
 };
 
 exports.encode = function encode(obj, version) {
   if (version === '2.0') {
-    return process.libhessian_encode(obj);
+    return process.hessian_encode(obj);
   } else {
     var encoder;
     encoder = exports.encoderV1;

@@ -6,7 +6,6 @@
  */
 
 #include "hessian.h"
-#include "env.h"
 
 short hessian_decode_date(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)
 {
