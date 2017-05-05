@@ -20,13 +20,13 @@ External Javascript API are 100% compatible with [Hessian.js](https://github.com
 
 ## Fast Hessian
 
-    Fast hessian2 decode: number x 10,408,116 ops/sec ±1.10% (87 runs sampled)
-    Fast hessian2 decode: date   x  4,139,701 ops/sec ±1.04% (88 runs sampled)
-    Fast hessian2 decode: string x  1,843,122 ops/sec ±5.17% (61 runs sampled)
-
     Fast hessian2 encode: number x 1,131,603 ops/sec ±1.20% (81 runs sampled)
     Fast hessian2 encode: date   x   952,233 ops/sec ±1.33% (82 runs sampled)
     Fast hessian2 encode: string x   668,330 ops/sec ±9.05% (68 runs sampled)
+
+    Fast hessian2 decode: number x 10,408,116 ops/sec ±1.10% (87 runs sampled)
+    Fast hessian2 decode: date   x  4,139,701 ops/sec ±1.04% (88 runs sampled)
+    Fast hessian2 decode: string x  1,843,122 ops/sec ±5.17% (61 runs sampled)
 
 ## API
 
