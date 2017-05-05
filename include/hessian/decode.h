@@ -10,10 +10,18 @@
 
 #include "node.h"
 
-short hessian_decode_null(uint8_t *buffer);
-short hessian_decode_int(uint8_t *buffer, int32_t *out);
-short hessian_decode_date(uint8_t *buffer, uint64_t *out);
-short hessian_decode_long(uint8_t *buffer, int64_t *out);
-short hessian_decode_string(uint8_t *buffer, char *out_str, size_t *out_length);
+short hessian_decode_string(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args);
+short hessian_decode_bytes(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args);
+short hessian_decode_long(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args);
+short hessian_decode_object(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args);
+short hessian_decode_double(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args);
+short hessian_decode_bool(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args);
+short hessian_decode_hash_map(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args);
+short hessian_decode_int(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args);
+short hessian_decode_date(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args);
+short hessian_decode_map(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args);
+short hessian_decode_null(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args);
+short hessian_decode_ref(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args);
+short hessian_decode_array(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args);
 
 #endif /* end of include guard: HESSIAN_DECODE_H_9A447E20 */

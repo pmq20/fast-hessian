@@ -19,23 +19,23 @@
 #define INT_SHORT_MAX 0x3ffff
 #define INT_SHORT_ZERO 0xd4
 
-short hessian_decode_int(uint8_t *buffer, int32_t *out)
+short hessian_decode_int(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)
 {
 	uint8_t code = buffer[0];
 	if (code >= 0x80 && code <= 0xbf) {
-		*out = code - 0x90;
+		args.GetReturnValue().Set(code - 0x90);
 		return 1;
 	}
 	if (code >= 0xc0 && code <= 0xcf) {
-		*out = ((code - 0xc8) << 8) + buffer[1];
+		args.GetReturnValue().Set(((code - 0xc8) << 8) + buffer[1]);
 		return 1;
 	}
 	if (code >= 0xd0 && code <= 0xd7) {
-		*out = ((code - 0xd4) << 16) + (buffer[1] << 8) + buffer[2];
+		args.GetReturnValue().Set(((code - 0xd4) << 16) + (buffer[1] << 8) + buffer[2]);
 		return 1;
 	}
 	if (code == 0x49) {
-		*out = ntohl(*(int32_t *)(buffer+1));
+		args.GetReturnValue().Set(ntohl(*(int32_t *)(buffer+1)));
 		return 1;
 	}
 	return 0;
@@ -45,38 +45,38 @@ short hessian_encode_int(int32_t val, uint8_t **out, size_t *len)
 {
 	if (INT_DIRECT_MIN <= val && val <= INT_DIRECT_MAX) {
 		*len = 1;
-                *out = (uint8_t*)malloc(*len);
-                if (NULL == *out) {
-                        return 0;
-                }
+		*out = (uint8_t*)malloc(*len);
+		if (NULL == *out) {
+			return 0;
+		}
 		*out[0] = val + INT_ZERO;
-                return 1;
+		return 1;
 	} else if (INT_BYTE_MIN <= val && val <= INT_BYTE_MAX) {
 		*len = 2;
-                *out = (uint8_t*)malloc(*len);
-                if (NULL == *out) {
-                        return 0;
-                }
+		*out = (uint8_t*)malloc(*len);
+		if (NULL == *out) {
+			return 0;
+		}
 		*out[1] = val & 0xff;
 		*out[0] = (val >> 8) + INT_BYTE_ZERO;
-                return 1;
+		return 1;
 	} else if (INT_SHORT_MIN <= val && val <= INT_SHORT_MAX) {
 		*len = 3;
-                *out = (uint8_t*)malloc(*len);
-                if (NULL == *out) {
-                        return 0;
-                }
+		*out = (uint8_t*)malloc(*len);
+		if (NULL == *out) {
+			return 0;
+		}
 		*out[0] = (val >> 16) + INT_SHORT_ZERO;
 		*(uint16_t *)(*out + 1) = htons(val & 0xffff);
-                return 1;
+		return 1;
 	} else {
 		*len = 5;
-                *out = (uint8_t*)malloc(*len);
-                if (NULL == *out) {
-                        return 0;
-                }
+		*out = (uint8_t*)malloc(*len);
+		if (NULL == *out) {
+			return 0;
+		}
 		*out[0] = 0x49;
 		*(int32_t *)(*out+1) = htonl(val);
-                return 1;
+		return 1;
 	}
 }

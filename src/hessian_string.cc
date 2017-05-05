@@ -7,9 +7,6 @@
 
 #include "hessian.h"
 
-static const size_t sublen = 0x8000;
-static const uint16_t sublen_ns = 1; // htons(sublen)
-
 short hessian_encode_string(v8::Local<v8::String> &str, uint8_t **out, size_t *len)
 {
 	size_t index = 0;
@@ -27,11 +24,13 @@ short hessian_encode_string(v8::Local<v8::String> &str, uint8_t **out, size_t *l
 		(*out)[index++] = (uint8_t)(length);
 	} else if (length <= 1023) {
 		(*out)[index++] = (uint8_t)(48 + (length >> 8));
-		(*out)[index++] = (uint8_t)(length); // Integer overflow and wrapping assumed
+		// Integer overflow and wrapping assumed
+		(*out)[index++] = (uint8_t)(length);
 	} else {
 		(*out)[index++] = 'S';
 		(*out)[index++] = (uint8_t)((length >> 8));
-		(*out)[index++] = (uint8_t)(length); // Integer overflow and wrapping assumed
+		// Integer overflow and wrapping assumed
+		(*out)[index++] = (uint8_t)(length);
 	}
 
 	int flags = v8::String::HINT_MANY_WRITES_EXPECTED |
@@ -100,9 +99,18 @@ static short internal_decode_string(uint8_t *buffer, char *out_str, size_t *out_
 	return 0;
 }
 
-short hessian_decode_string(uint8_t *buffer, char *out_str, size_t *out_length)
+short hessian_decode_string(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)
 {
+	node::Environment* env = node::Environment::GetCurrent(args);
+	EscapableHandleScope scope(env->isolate());
 	short is_last_chunk = 0;
-	*out_length = 0;
-	return internal_decode_string(buffer, out_str, out_length, &is_last_chunk);
+	if (internal_decode_string(buffer, out_str, out_length, &is_last_chunk)) {
+		auto string = String::NewFromUtf8(
+			isolate, buf, v8::NewStringType::kNormal, buflen).ToLocalChecked();
+		scope.Escape(string);
+		args.GetReturnValue().Set(string);
+		return 1;
+	} else {
+		return 0;
+	}
 }

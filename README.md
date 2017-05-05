@@ -8,6 +8,41 @@ External Javascript API are 100% compatible with [Hessian.js](https://github.com
 
 **Environment: node 8.0.0-pre + v8 5.7.492.69**
 
+## API
+
+There are only 2 top level API, which internally calls different types of encoding and decoding API automatically.
+
+- `void hessian_encode(const v8::FunctionCallbackInfo<v8::Value>& args)`
+- `void hessian_decode(const v8::FunctionCallbackInfo<v8::Value>& args)`
+
+### Encoding
+
+All API returns `1` when encoding succeeds and `0` on failures.
+
+- `short hessian_encode_null(uint8_t **out, size_t *len)`
+- `short hessian_encode_int(int32_t val, uint8_t **out, size_t *len)`
+- `short hessian_encode_date(uint64_t milliEpoch, uint8_t **out, size_t *len)`
+- `short hessian_encode_long(int64_t val, uint8_t **out, size_t *len)`
+- `short hessian_encode_string(v8::Local<v8::String> &str, uint8_t **out, size_t *len)`
+
+### Decoding
+
+All API returns `1` when decoding succeeds and `0` on failures.
+
+- `short hessian_decode_string(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
+- `short hessian_decode_bytes(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
+- `short hessian_decode_long(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
+- `short hessian_decode_object(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
+- `short hessian_decode_double(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
+- `short hessian_decode_bool(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
+- `short hessian_decode_hash_map(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
+- `short hessian_decode_int(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
+- `short hessian_decode_date(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
+- `short hessian_decode_map(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
+- `short hessian_decode_null(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
+- `short hessian_decode_ref(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
+- `short hessian_decode_array(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
+
 ## See Also
 
 * [Hessian 2.0 Serialization Protocol](http://hessian.caucho.com/doc/hessian-serialization.html): a dynamically-typed, binary serialization and Web Services protocol designed for object-oriented transmission.
