@@ -109,7 +109,7 @@ void hessian_decode(const v8::FunctionCallbackInfo<v8::Value>& args) {
 		case 55:
 		case 65:
 		case 66:
-			"readBytes"
+			success = hessian_decode_bytes((uint8_t *)buf_data, buf_length, args);
 			break;
 		case 56:
 		case 57:
@@ -161,7 +161,7 @@ void hessian_decode(const v8::FunctionCallbackInfo<v8::Value>& args) {
 		case 253:
 		case 254:
 		case 255:
-			"readLong"
+			success = hessian_decode_long((uint8_t *)buf_data, buf_length, args);
 			break;
 		case 67:
 		case 79:
@@ -186,18 +186,17 @@ void hessian_decode(const v8::FunctionCallbackInfo<v8::Value>& args) {
 		case 109:
 		case 110:
 		case 111:
-			"readObject"
+			success = hessian_decode_object((uint8_t *)buf_data, buf_length, args);
 			break;
 		case 68:
-			"readDouble"
+			success = hessian_decode_double((uint8_t *)buf_data, buf_length, args);
 			break;
 		case 70:
 		case 84:
-			"readBool"
-			"readBool"
+			success = hessian_decode_bool((uint8_t *)buf_data, buf_length, args);
 			break;
 		case 72:
-			"readHashMap"
+			success = hessian_decode_hash_map((uint8_t *)buf_data, buf_length, args);
 			break;
 		case 73:
 		case 128:
@@ -288,20 +287,20 @@ void hessian_decode(const v8::FunctionCallbackInfo<v8::Value>& args) {
 		case 213:
 		case 214:
 		case 215:
-			"readInt"
+			success = hessian_decode_int((uint8_t *)buf_data, buf_length, args);
 			break;
 		case 74:
 		case 75:
-			"readDate"
+			success = hessian_decode_date((uint8_t *)buf_data, buf_length, args);
 			break;
 		case 77:
-			"readMap"
+			success = hessian_decode_map((uint8_t *)buf_data, buf_length, args);
 			break;
 		case 78:
-			"readNull"
+			success = hessian_decode_null((uint8_t *)buf_data, buf_length, args);
 			break;
 		case 81:
-			"readRef"
+			success = hessian_decode_ref((uint8_t *)buf_data, buf_length, args);
 			break;
 		case 86:
 		case 88:
@@ -321,9 +320,13 @@ void hessian_decode(const v8::FunctionCallbackInfo<v8::Value>& args) {
 		case 125:
 		case 126:
 		case 127:
-			"readArray"
+			success = hessian_decode_array((uint8_t *)buf_data, buf_length, args);
 			break;
 		default:
-			break;
+			// TODO raise error
+			success = 0;
+	}
+	if (!success) {
+		// TODO throw error
 	}
 }

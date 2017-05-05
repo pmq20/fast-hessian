@@ -21,21 +21,21 @@
 
 short hessian_decode_int(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)
 {
-	uint8_t code = buffer[0];
+	uint8_t code = buf[0];
 	if (code >= 0x80 && code <= 0xbf) {
 		args.GetReturnValue().Set(code - 0x90);
 		return 1;
 	}
-	if (code >= 0xc0 && code <= 0xcf) {
-		args.GetReturnValue().Set(((code - 0xc8) << 8) + buffer[1]);
+	if (buf_length >= 2 && code >= 0xc0 && code <= 0xcf) {
+		args.GetReturnValue().Set(((code - 0xc8) << 8) + buf[1]);
 		return 1;
 	}
-	if (code >= 0xd0 && code <= 0xd7) {
-		args.GetReturnValue().Set(((code - 0xd4) << 16) + (buffer[1] << 8) + buffer[2]);
+	if (buf_length >= 3 && code >= 0xd0 && code <= 0xd7) {
+		args.GetReturnValue().Set(((code - 0xd4) << 16) + (buf[1] << 8) + buf[2]);
 		return 1;
 	}
-	if (code == 0x49) {
-		args.GetReturnValue().Set(ntohl(*(int32_t *)(buffer+1)));
+	if (buf_length >= 5 && code == 0x49) {
+		args.GetReturnValue().Set(ntohl(*(int32_t *)(buf + 1)));
 		return 1;
 	}
 	return 0;

@@ -33,23 +33,20 @@ short hessian_encode_string(v8::Local<v8::String> &str, uint8_t **out, size_t *l
 		(*out)[index++] = (uint8_t)(length);
 	}
 
-	int flags = v8::String::HINT_MANY_WRITES_EXPECTED |
-		    v8::String::NO_NULL_TERMINATION |
-		    v8::String::REPLACE_INVALID_UTF8;
-
 	// TODO encoded as CESU-8
+	int flags = v8::String::HINT_MANY_WRITES_EXPECTED | v8::String::NO_NULL_TERMINATION | v8::String::REPLACE_INVALID_UTF8;
 	int nbytes = str->WriteUtf8((char *)(*out + index), capacity, NULL, flags);
 	*len = index + nbytes;
-	*out = (uint8_t*)realloc(*out, *len);
-	if (NULL == *out) {
-		return 0;
+	uint8_t *new_out = (uint8_t*)realloc(*out, *len);
+	if (NULL != new_out) {
+		*out = new_out;
 	}
 	return 1;
 }
 
-static short internal_decode_string(uint8_t *buffer, char *out_str, size_t *out_length, short *is_last_chunk)
+static short internal_decode_string(uint8_t * const buf, const size_t buf_length, uint8_t *out_str, size_t *out_length, short *is_last_chunk)
 {
-	uint8_t code = buffer[0];
+	uint8_t code = buf[0];
 	size_t delta_length;
 	short result;
 
@@ -65,31 +62,52 @@ static short internal_decode_string(uint8_t *buffer, char *out_str, size_t *out_
 		case 0x1c: case 0x1d: case 0x1e: case 0x1f:
 			*is_last_chunk = 1;
 			delta_length = code - 0x00;
-			memcpy(out_str + *out_length, buffer + 1, delta_length);
+			if (buf_length < 1 + delta_length) {
+				return 0;
+			}
+			memcpy(out_str + *out_length, buf + 1, delta_length);
 			*out_length = *out_length + delta_length;
 			return 1;
 
 		case 0x30: case 0x31: case 0x32: case 0x33:
 			*is_last_chunk = 1;
-			delta_length = (code - 0x30) * 256 + buffer[1];
-			memcpy(out_str + *out_length, buffer + 2, delta_length);
+			if (buf_length < 2) {
+				return 0;
+			}
+			delta_length = (code - 0x30) * 256 + buf[1];
+			if (buf_length < 2 + delta_length) {
+				return 0;
+			}
+			memcpy(out_str + *out_length, buf + 2, delta_length);
 			*out_length = *out_length + delta_length;
 			return 1;
 
 		case 0x53:
 			*is_last_chunk = 1;
-			delta_length = ntohs(*(uint16_t *)(buffer + 1));
-			memcpy(out_str + *out_length, buffer + 2, delta_length);
+			if (buf_length < 3) {
+				return 0;
+			}
+			delta_length = ntohs(*(uint16_t *)(buf + 1));
+			if (buf_length < 3 + delta_length) {
+				return 0;
+			}
+			memcpy(out_str + *out_length, buf + 3, delta_length);
 			*out_length = *out_length + delta_length;
 			return 1;
 
 		case 0x52:
 			*is_last_chunk = 0;
-			delta_length = ntohs(*(uint16_t *)(buffer + 1));
-			memcpy(out_str + *out_length, buffer + 2, delta_length);
+			if (buf_length < 3) {
+				return 0;
+			}
+			delta_length = ntohs(*(uint16_t *)(buf + 1));
+			if (buf_length < 3 + delta_length) {
+				return 0;
+			}
+			memcpy(out_str + *out_length, buf + 3, delta_length);
 			*out_length = *out_length + delta_length;
 			while (!*is_last_chunk) {
-				result = internal_decode_string(buffer, out_str, out_length, is_last_chunk);
+				result = internal_decode_string(buf, buf_length, out_str, out_length, is_last_chunk);
 				if (!result) {
 					return 0;
 				}
@@ -99,18 +117,43 @@ static short internal_decode_string(uint8_t *buffer, char *out_str, size_t *out_
 	return 0;
 }
 
+class HessianExternalOneByteStringResource : public v8::ExternalOneByteStringResource
+{
+public:
+	HessianExternalOneByteStringResource(uint8_t *out_str, size_t out_length)
+		: out_str_(out_str), out_length_(out_length) {}
+	~HessianExternalOneByteStringResource() { free(out_str_); }
+
+	const char* data() const { return out_str_; }
+	size_t length() const { return out_length_; }
+private:
+	const char* out_str_;
+	size_t out_length_;
+};
+
 short hessian_decode_string(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)
 {
 	node::Environment* env = node::Environment::GetCurrent(args);
 	EscapableHandleScope scope(env->isolate());
+	v8::Local<v8::String> string;
 	short is_last_chunk = 0;
-	if (internal_decode_string(buffer, out_str, out_length, &is_last_chunk)) {
-		auto string = String::NewFromUtf8(
-			isolate, buf, v8::NewStringType::kNormal, buflen).ToLocalChecked();
+	size_t out_length = 0;
+	uint8_t *out_str = (uint8_t *)malloc(buf_length);
+	if (NULL == out_str) {
+		return 0;
+	}
+	if (internal_decode_string(buf, buf_length, out_str, &out_length, &is_last_chunk)) {
+		uint8_t *new_out = (uint8_t*)realloc(out_str, out_length);
+		if (NULL != new_out) {
+			out_str = new_out;
+		}
+		HessianExternalOneByteStringResource resource(out_str, out_length);
+		string = v8::String::NewExternalOneByte(isolate, &resource).ToLocalChecked();
 		scope.Escape(string);
 		args.GetReturnValue().Set(string);
 		return 1;
 	} else {
+		free(out_str);
 		return 0;
 	}
 }

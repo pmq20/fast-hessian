@@ -14,19 +14,19 @@ short hessian_decode_long(uint8_t * const buf, const size_t buf_length, const v8
 		args.GetReturnValue().Set(code - 0xe0);
 		return 1;
 	}
-	if (code >= 0xf0 && code <= 0xff) {
-		args.GetReturnValue().Set(((code - 0xf8) << 8) + out[1]);
+	if (buf_length >= 2 && code >= 0xf0 && code <= 0xff) {
+		args.GetReturnValue().Set(((code - 0xf8) << 8) + buf[1]);
 		return 1;
 	}
-	if (code >= 0x38 && code <= 0x3f) {
-		args.GetReturnValue().Set(((code - 0x3c) << 16) + (out[1] << 8) + out[2]);
+	if (buf_length >= 3 && code >= 0x38 && code <= 0x3f) {
+		args.GetReturnValue().Set(((code - 0x3c) << 16) + (buf[1] << 8) + buf[2]);
 		return 1;
 	}
-	if (code == 0x59) {
+	if (buf_length >= 4 && code == 0x59) {
 		args.GetReturnValue().Set(ntohl(*(int32_t *)(buf+1)));
 		return 1;
 	}
-	if (code == 0x4c) {
+	if (buf_length >= 5 && code == 0x4c) {
 		args.GetReturnValue().Set(ntohll(*(int64_t *)(buf + 1)));
 		return 1;
 	}

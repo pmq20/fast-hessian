@@ -11,15 +11,15 @@ short hessian_decode_date(uint8_t * const buf, const size_t buf_length, const v8
 {
 	node::Environment* env = node::Environment::GetCurrent(args);
 	EscapableHandleScope scope(env->isolate());
-	uint8_t code = buffer[0];
-	if (code == 0x4a) {
-		auto date = v8::Date::New(env->context(), ntohll(*(uint64_t *)(buffer + 1)));
+	uint8_t code = buf[0];
+	if (buf_length >= 9 && code == 0x4a) {
+		auto date = v8::Date::New(env->context(), ntohll(*(uint64_t *)(buf + 1)));
 		scope.Escape(date);
 		args.GetReturnValue().Set(date);
 		return 1;
 	}
-	if (code == 0x4b) {
-		auto date = v8::Date::New(env->context(), *(uint32_t *)(buffer + 1)) * 60000));
+	if (buf_length >= 5 && code == 0x4b) {
+		auto date = v8::Date::New(env->context(), *(uint32_t *)(buf + 1)) * 60000));
 		scope.Escape(date);
 		args.GetReturnValue().Set(date);
 		return 1;

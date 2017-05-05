@@ -28,20 +28,21 @@ All API returns `1` when encoding succeeds and `0` on failures.
 ### Decoding
 
 All API returns `1` when decoding succeeds and `0` on failures.
+All API accept argument `args` of type `const v8::FunctionCallbackInfo<v8::Value>&`, into which the decoded result shall be put.
 
-- `short hessian_decode_string(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
-- `short hessian_decode_bytes(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
-- `short hessian_decode_long(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
-- `short hessian_decode_object(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
-- `short hessian_decode_double(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
-- `short hessian_decode_bool(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
-- `short hessian_decode_hash_map(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
-- `short hessian_decode_int(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
-- `short hessian_decode_date(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
-- `short hessian_decode_map(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
-- `short hessian_decode_null(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
-- `short hessian_decode_ref(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
-- `short hessian_decode_array(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)`
+- `short hessian_decode_string(uint8_t * const buf, const size_t buf_length, args)`
+- `short hessian_decode_bytes(uint8_t * const buf, const size_t buf_length, args)`
+- `short hessian_decode_long(uint8_t * const buf, const size_t buf_length, args)`
+- `short hessian_decode_object(uint8_t * const buf, const size_t buf_length, args)`
+- `short hessian_decode_double(uint8_t * const buf, const size_t buf_length, args)`
+- `short hessian_decode_bool(uint8_t * const buf, const size_t buf_length, args)`
+- `short hessian_decode_hash_map(uint8_t * const buf, const size_t buf_length, args)`
+- `short hessian_decode_int(uint8_t * const buf, const size_t buf_length, args)`
+- `short hessian_decode_date(uint8_t * const buf, const size_t buf_length, args)`
+- `short hessian_decode_map(uint8_t * const buf, const size_t buf_length, args)`
+- `short hessian_decode_null(uint8_t * const buf, const size_t buf_length, args)`
+- `short hessian_decode_ref(uint8_t * const buf, const size_t buf_length, args)`
+- `short hessian_decode_array(uint8_t * const buf, const size_t buf_length, args)`
 
 ## See Also
 
