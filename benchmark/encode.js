@@ -65,9 +65,9 @@ suite
 // // .add('hessian1 encode: long', function() {
 // //   hessian.encode(java.long(300), '1.0');
 // // })
-.add('hessian2 encode: long', function() {
-  hessian.encode(java.long(300), '2.0');
-})
+// .add('hessian2 encode: long', function() {
+//   hessian.encode(java.long(300), '2.0');
+// })
 //
 // // .add('hessian1 encode: string', function() {
 // //   hessian.encode('xxx1231231231231xxx123', '1.0');

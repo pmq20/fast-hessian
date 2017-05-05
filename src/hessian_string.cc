@@ -148,8 +148,8 @@ short hessian_decode_string(uint8_t * const buf, const size_t buf_length, const 
 		if (NULL != new_out) {
 			out_str = new_out;
 		}
-		HessianExternalOneByteStringResource resource(out_str, out_length);
-		string = v8::String::NewExternalOneByte(env->isolate(), &resource).ToLocalChecked();
+		string = v8::String::NewExternalOneByte(env->isolate(), 
+			new HessianExternalOneByteStringResource(out_str, out_length)).ToLocalChecked();
 		scope.Escape(string);
 		args.GetReturnValue().Set(string);
 		return 1;
