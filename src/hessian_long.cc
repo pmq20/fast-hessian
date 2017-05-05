@@ -27,7 +27,7 @@ short hessian_decode_long(uint8_t * const buf, const size_t buf_length, const v8
 		return 1;
 	}
 	if (buf_length >= 5 && code == 0x4c) {
-		args.GetReturnValue().Set(ntohll(*(int64_t *)(buf + 1)));
+		args.GetReturnValue().Set((double)(ntohll(*(int64_t *)(buf + 1))));
 		return 1;
 	}
 	return 0;

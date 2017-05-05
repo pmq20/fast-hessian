@@ -6,20 +6,23 @@
  */
 
 #include "hessian.h"
+#include "env.h"
 
 short hessian_decode_date(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)
 {
 	node::Environment* env = node::Environment::GetCurrent(args);
-	EscapableHandleScope scope(env->isolate());
+	v8::EscapableHandleScope scope(env->isolate());
 	uint8_t code = buf[0];
 	if (buf_length >= 9 && code == 0x4a) {
-		auto date = v8::Date::New(env->context(), ntohll(*(uint64_t *)(buf + 1)));
+		v8::Local<v8::Value> date = v8::Date::New(env->context(),
+			ntohll(*(uint64_t *)(buf + 1))).ToLocalChecked();
 		scope.Escape(date);
 		args.GetReturnValue().Set(date);
 		return 1;
 	}
 	if (buf_length >= 5 && code == 0x4b) {
-		auto date = v8::Date::New(env->context(), *(uint32_t *)(buf + 1)) * 60000));
+		v8::Local<v8::Value> date = v8::Date::New(env->context(),
+			*(uint32_t *)(buf + 1) * 60000).ToLocalChecked();
 		scope.Escape(date);
 		args.GetReturnValue().Set(date);
 		return 1;

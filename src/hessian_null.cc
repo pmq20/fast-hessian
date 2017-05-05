@@ -9,7 +9,7 @@
 
 short hessian_decode_null(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)
 {
-	if (1 == buf_length && 'N' == buffer[0]) {
+	if (1 == buf_length && 'N' == buf[0]) {
 		return 1;
 	} else {
 		return 0;

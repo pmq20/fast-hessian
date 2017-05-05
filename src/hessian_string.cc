@@ -6,6 +6,7 @@
  */
 
 #include "hessian.h"
+#include "env.h"
 
 short hessian_encode_string(v8::Local<v8::String> &str, uint8_t **out, size_t *len)
 {
@@ -117,24 +118,24 @@ static short internal_decode_string(uint8_t * const buf, const size_t buf_length
 	return 0;
 }
 
-class HessianExternalOneByteStringResource : public v8::ExternalOneByteStringResource
+class HessianExternalOneByteStringResource : public v8::String::ExternalOneByteStringResource
 {
 public:
 	HessianExternalOneByteStringResource(uint8_t *out_str, size_t out_length)
 		: out_str_(out_str), out_length_(out_length) {}
 	~HessianExternalOneByteStringResource() { free(out_str_); }
 
-	const char* data() const { return out_str_; }
+	const char* data() const { return (const char*)out_str_; }
 	size_t length() const { return out_length_; }
 private:
-	const char* out_str_;
+	uint8_t *out_str_;
 	size_t out_length_;
 };
 
 short hessian_decode_string(uint8_t * const buf, const size_t buf_length, const v8::FunctionCallbackInfo<v8::Value>& args)
 {
 	node::Environment* env = node::Environment::GetCurrent(args);
-	EscapableHandleScope scope(env->isolate());
+	v8::EscapableHandleScope scope(env->isolate());
 	v8::Local<v8::String> string;
 	short is_last_chunk = 0;
 	size_t out_length = 0;
@@ -148,7 +149,7 @@ short hessian_decode_string(uint8_t * const buf, const size_t buf_length, const 
 			out_str = new_out;
 		}
 		HessianExternalOneByteStringResource resource(out_str, out_length);
-		string = v8::String::NewExternalOneByte(isolate, &resource).ToLocalChecked();
+		string = v8::String::NewExternalOneByte(env->isolate(), &resource).ToLocalChecked();
 		scope.Escape(string);
 		args.GetReturnValue().Set(string);
 		return 1;
