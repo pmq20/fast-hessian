@@ -41,42 +41,30 @@ short hessian_decode_int(uint8_t * const buf, const size_t buf_length, const v8:
 	return 0;
 }
 
-short hessian_encode_int(int32_t val, uint8_t **out, size_t *len)
+v8::Local<v8::Uint8Array> hessian_encode_int(int32_t val, v8::Isolate *isolate)
 {
+	v8::EscapableHandleScope handle_scope(isolate);
+	v8::Local<v8::Uint8Array> ret;
+	uint8_t* out;
 	if (INT_DIRECT_MIN <= val && val <= INT_DIRECT_MAX) {
-		*len = 1;
-		*out = (uint8_t*)malloc(*len);
-		if (NULL == *out) {
-			return 0;
-		}
-		*out[0] = val + INT_ZERO;
-		return 1;
+		ret = hessian_alloc(isolate, 1);
+		out = static_cast<uint8_t*>(ret->Buffer()->GetContents().Data()) + ret->ByteOffset();
+		out[0] = val + INT_ZERO;
 	} else if (INT_BYTE_MIN <= val && val <= INT_BYTE_MAX) {
-		*len = 2;
-		*out = (uint8_t*)malloc(*len);
-		if (NULL == *out) {
-			return 0;
-		}
-		*out[1] = val & 0xff;
-		*out[0] = (val >> 8) + INT_BYTE_ZERO;
-		return 1;
+		ret = hessian_alloc(isolate, 2);
+		out = static_cast<uint8_t*>(ret->Buffer()->GetContents().Data()) + ret->ByteOffset();
+		out[1] = val & 0xff;
+		out[0] = (val >> 8) + INT_BYTE_ZERO;
 	} else if (INT_SHORT_MIN <= val && val <= INT_SHORT_MAX) {
-		*len = 3;
-		*out = (uint8_t*)malloc(*len);
-		if (NULL == *out) {
-			return 0;
-		}
-		*out[0] = (val >> 16) + INT_SHORT_ZERO;
-		*(uint16_t *)(*out + 1) = htons(val & 0xffff);
-		return 1;
+		ret = hessian_alloc(isolate, 3);
+		out = static_cast<uint8_t*>(ret->Buffer()->GetContents().Data()) + ret->ByteOffset();
+		out[0] = (val >> 16) + INT_SHORT_ZERO;
+		*(uint16_t *)(out + 1) = htons(val & 0xffff);
 	} else {
-		*len = 5;
-		*out = (uint8_t*)malloc(*len);
-		if (NULL == *out) {
-			return 0;
-		}
-		*out[0] = 0x49;
-		*(int32_t *)(*out+1) = htonl(val);
-		return 1;
+		ret = hessian_alloc(isolate, 5);
+		out = static_cast<uint8_t*>(ret->Buffer()->GetContents().Data()) + ret->ByteOffset();
+		out[0] = 0x49;
+		*(int32_t *)(out+1) = htonl(val);
 	}
+	return handle_scope.Escape(ret);
 }

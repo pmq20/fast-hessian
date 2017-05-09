@@ -16,13 +16,11 @@ short hessian_decode_null(uint8_t * const buf, const size_t buf_length, const v8
 	}
 }
 
-short hessian_encode_null(uint8_t **out, size_t *len)
+v8::Local<v8::Uint8Array> hessian_encode_null(v8::Isolate *isolate)
 {
-	*len = 1;
-	*out = (uint8_t*)malloc(*len);
-	if (NULL == *out) {
-		return 0;
-	}
-	*out[0] = 'N';
-	return 1;
+	v8::EscapableHandleScope handle_scope(isolate);
+	v8::Local<v8::Uint8Array> ret = hessian_alloc(isolate, 1);
+	uint8_t* out = static_cast<uint8_t*>(ret->Buffer()->GetContents().Data()) + ret->ByteOffset();
+	out[0] = 'N';
+	return handle_scope.Escape(ret);
 }

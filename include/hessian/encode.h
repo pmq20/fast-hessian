@@ -10,10 +10,10 @@
 
 #include "node.h"
 
-short hessian_encode_null(uint8_t **out, size_t *len);
-short hessian_encode_int(int32_t val, uint8_t **out, size_t *len);
-short hessian_encode_date(uint64_t milliEpoch, uint8_t **out, size_t *len);
-short hessian_encode_long(int64_t val, uint8_t **out, size_t *len);
-short hessian_encode_string(v8::Local<v8::String> &str, uint8_t **out, size_t *len);
+v8::Local<v8::Uint8Array> hessian_encode_null(v8::Isolate *isolate);
+v8::Local<v8::Uint8Array> hessian_encode_int(int32_t val, v8::Isolate *isolate);
+v8::Local<v8::Uint8Array> hessian_encode_date(uint64_t milliEpoch, v8::Isolate *isolate);
+v8::Local<v8::Uint8Array> hessian_encode_long(int64_t val, v8::Isolate *isolate);
+v8::Local<v8::Uint8Array> hessian_encode_string(v8::Local<v8::String> &str, v8::Isolate *isolate);
 
 #endif /* end of include guard: HESSIAN_ENCODE_H_6392FA14 */

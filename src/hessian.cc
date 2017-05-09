@@ -7,41 +7,80 @@
 
 #include "hessian.h"
 
-void hessian_encode(const v8::FunctionCallbackInfo<v8::Value>& args) {
-	node::Environment* env = node::Environment::GetCurrent(args);
-	v8::Local<v8::Object> vbuf;
-	char *data;
-	size_t length;
-	short ret;
+#define HESSIAN_POOL_SIZE (8 * 1024)
+#define HESSIAN_POOL_SEG_SIZE (4 * 1024)
 
-	if (args[0]->IsNullOrUndefined()) {
-		ret = hessian_encode_null((uint8_t**)(&data), &length);
-	} else if (args[0]->IsNumber()) {
-		int64_t x = args[0]->IntegerValue();
-		if (x >= LONG_MAX || x < LONG_MIN) {
-			ret = hessian_encode_long(x, (uint8_t**)(&data), &length);
-		} else {
-			ret = hessian_encode_int((int32_t)x, (uint8_t**)(&data), &length);
-		}
-	} else if (args[0]->IsDate()) {
-		double x = args[0].As<v8::Date>()->ValueOf();
-		ret = hessian_encode_date((uint64_t)x, (uint8_t**)(&data), &length);
-	} else if (args[0]->IsString()) {
-		v8::Local<v8::String> string = args[0].As<v8::String>();
-		ret = hessian_encode_string(string, (uint8_t**)(&data), &length);
-	} else {
-		// TODO throw error
-		return;
+v8::Persistent<v8::ArrayBuffer> hessian_pool;
+size_t hessian_pool_offset = 0;
+
+void hessian_create_pool(v8::Isolate *isolate)
+{
+	if (!hessian_pool.IsEmpty()) {
+		hessian_pool.SetWeak();
 	}
-	if (!ret) {
-		// TODO throw error
-		return;
-	}
-	vbuf = node::Buffer::New(env, data, length).ToLocalChecked();
-	return args.GetReturnValue().Set(vbuf);
+	hessian_pool.Reset(isolate, v8::ArrayBuffer::New(isolate, HESSIAN_POOL_SIZE));
+	hessian_pool_offset = 0;
 }
 
-void hessian_decode(const v8::FunctionCallbackInfo<v8::Value>& args) {
+v8::Local<v8::Uint8Array> hessian_alloc(v8::Isolate *isolate, size_t size)
+{
+	v8::EscapableHandleScope handle_scope(isolate);
+	v8::Local<v8::ArrayBuffer> base;
+	v8::Local<v8::Uint8Array> ret;
+	if (size < HESSIAN_POOL_SEG_SIZE) {
+		if (size > (HESSIAN_POOL_SIZE - hessian_pool_offset)) {
+			hessian_create_pool(isolate);
+		}
+		base = hessian_pool.Get(isolate);
+		ret = v8::Uint8Array::New(base, hessian_pool_offset, size);
+		hessian_pool_offset += size;
+	} else {
+		base = v8::ArrayBuffer::New(isolate, size);
+		ret = v8::Uint8Array::New(base, 0, size);
+	}
+	return handle_scope.Escape(ret);
+}
+
+void hessian_encode(const v8::FunctionCallbackInfo<v8::Value>& args)
+{
+	node::Environment* env = node::Environment::GetCurrent(args);
+	v8::Local<v8::Uint8Array> ret;
+
+	if (args[0]->IsNullOrUndefined()) {
+		ret = hessian_encode_null(env->isolate());
+	} else if (args[0]->IsNumber()) {
+		int64_t x = args[0]->IntegerValue();
+//		if (x >= LONG_MAX || x < LONG_MIN) {
+//			ret = hessian_encode_long(x, env);
+//		} else {
+			ret = hessian_encode_int((int32_t)x, env->isolate());
+//		}
+//	} else if (args[0]->IsDate()) {
+//		double x = args[0].As<v8::Date>()->ValueOf();
+//		ret = hessian_encode_date((uint64_t)x, env);
+//	} else if (args[0]->IsString()) {
+//		v8::Local<v8::String> string = args[0].As<v8::String>();
+//		ret = hessian_encode_string(string, env);
+	} else {
+		// TODO throw unsupported type to encode
+		return;
+	}
+	if (ret.IsEmpty()) {
+		// TODO throw encoding failed somehow
+		return;
+	}
+	v8::Maybe<bool> mb = ret->SetPrototype(env->context(), env->buffer_prototype_object());
+	if (mb.FromMaybe(false)) {
+		args.GetReturnValue().Set(ret);
+		return;
+	} else {
+		// TODO throw Object failed to be created
+		return;
+	}
+}
+
+void hessian_decode(const v8::FunctionCallbackInfo<v8::Value>& args)
+{
 	SPREAD_BUFFER_ARG(args[0], buf);
 	short success;
 	switch (*((uint8_t*)buf_data)) {
