@@ -6,13 +6,14 @@ External Javascript API are 100% compatible with [Hessian.js](https://github.com
 
 ## Why is it fast?
 
-- When encoding, Fast Hessian maintains a shared memory pool so that number of memory allocations could be reduced.
+- When encoding, Fast Hessian maintains a shared memory pool so that the number of memory allocations is reduced.
+- When decoding, less temporary buffers are produced comparing to Hessian.js
 
 ## Compete with Hessian.js
 
 **Environment: node 8.0.0-pre + v8 5.7.492.69**
 
-### Hessian.js
+### (baseline) Hessian.js
 
     hessian2 encode: number x 1,119,720 ops/sec ±1.39% (85 runs sampled)
     hessian2 encode: date   x   721,557 ops/sec ±1.16% (88 runs sampled)
