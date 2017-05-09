@@ -7,7 +7,7 @@ External Javascript API are 100% compatible with [Hessian.js](https://github.com
 ## Why is it fast?
 
 - When encoding, Fast Hessian maintains a shared memory pool so that less memory allocations are invoked.
-- When decoding, less temporary buffers are produced comparing to Hessian.js
+- When decoding, Fast Hessian produces no temporary buffers and outputs the result directly.
 
 ## Compete with Hessian.js
 
