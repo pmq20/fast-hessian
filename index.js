@@ -36,7 +36,7 @@ exports.decode = function decode(buf, version, withType) {
 
 exports.encode = function encode(obj, version) {
   if (version === '2.0') {
-    return process.hessian_encode(obj);
+    return Buffer.from(process.hessian_encode(obj));
   } else {
     var encoder;
     encoder = exports.encoderV1;
