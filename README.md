@@ -16,25 +16,25 @@ External Javascript API are 100% compatible with [Hessian.js](https://github.com
 
 ### Encoding
 
-    hessian2 encode: number      x 1,560,679 ops/sec ±0.73% (90 runs sampled)
-    Fast hessian2 encode: number x 3,032,388 ops/sec ±0.44% (90 runs sampled)
+    Hessian.js encode: number   x 1,560,679 ops/sec ±0.73% (90 runs sampled)
+    Fast Hessian encode: number x 3,032,388 ops/sec ±0.44% (90 runs sampled)
 
-    hessian2 encode: date        x   906,503 ops/sec ±1.42% (87 runs sampled)
-    Fast hessian2 encode: date   x 1,893,531 ops/sec ±0.51% (92 runs sampled)
+    Hessian.js encode: date     x   906,503 ops/sec ±1.42% (87 runs sampled)
+    Fast Hessian encode: date   x 1,893,531 ops/sec ±0.51% (92 runs sampled)
 
-    hessian2 encode: string      x 1,137,613 ops/sec ±1.30% (91 runs sampled)
-    Fast hessian2 encode: string x 1,877,451 ops/sec ±0.44% (95 runs sampled)
+    Hessian.js encode: string   x 1,137,613 ops/sec ±1.30% (91 runs sampled)
+    Fast Hessian encode: string x 1,877,451 ops/sec ±0.44% (95 runs sampled)
 
 ### Decoding
 
-    hessian2 decode: number      x  4,479,530 ops/sec ±0.29% (96 runs sampled)
-    Fast hessian2 decode: number x 11,770,862 ops/sec ±0.42% (91 runs sampled)
+    Hessian.js decode: number   x  4,479,530 ops/sec ±0.29% (96 runs sampled)
+    Fast Hessian decode: number x 11,770,862 ops/sec ±0.42% (91 runs sampled)
 
-    hessian2 decode: date        x  1,270,513 ops/sec ±0.91% (90 runs sampled)
-    Fast hessian2 decode: date   x  4,697,034 ops/sec ±0.32% (93 runs sampled)
+    Hessian.js decode: date     x  1,270,513 ops/sec ±0.91% (90 runs sampled)
+    Fast Hessian decode: date   x  4,697,034 ops/sec ±0.32% (93 runs sampled)
 
-    hessian2 decode: string      x    652,283 ops/sec ±1.04% (93 runs sampled)
-    Fast hessian2 decode: string x  2,710,455 ops/sec ±1.58% (76 runs sampled)
+    Hessian.js decode: string   x    652,283 ops/sec ±1.04% (93 runs sampled)
+    Fast Hessian decode: string x  2,710,455 ops/sec ±1.58% (76 runs sampled)
 
 ## See Also
 
