@@ -14,19 +14,19 @@ void hessian_encode(const v8::FunctionCallbackInfo<v8::Value>& args)
 
 	if (args[0]->IsNullOrUndefined()) {
 		ret = hessian_encode_null(env->isolate());
-//	} else if (args[0]->IsNumber()) {
-//		int64_t x = args[0]->IntegerValue();
-//		if (x >= LONG_MAX || x < LONG_MIN) {
-//			ret = hessian_encode_long(x, env);
-//		} else {
-//			ret = hessian_encode_int((int32_t)x, env->isolate());
-//		}
-//	} else if (args[0]->IsDate()) {
-//		double x = args[0].As<v8::Date>()->ValueOf();
-//		ret = hessian_encode_date((uint64_t)x, env);
-//	} else if (args[0]->IsString()) {
-//		v8::Local<v8::String> string = args[0].As<v8::String>();
-//		ret = hessian_encode_string(string, env);
+	} else if (args[0]->IsNumber()) {
+		int64_t x = args[0]->IntegerValue();
+		if (x >= LONG_MAX || x < LONG_MIN) {
+			ret = hessian_encode_long(x, env->isolate());
+		} else {
+			ret = hessian_encode_int((int32_t)x, env->isolate());
+		}
+	} else if (args[0]->IsDate()) {
+		double x = args[0].As<v8::Date>()->ValueOf();
+		ret = hessian_encode_date((uint64_t)x, env->isolate());
+	} else if (args[0]->IsString()) {
+		v8::Local<v8::String> string = args[0].As<v8::String>();
+		ret = hessian_encode_string(string, env->isolate());
 	} else {
 		// TODO throw unsupported type to encode
 		return;

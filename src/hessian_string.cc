@@ -7,41 +7,37 @@
 
 #include "hessian.h"
 
-short hessian_encode_string(v8::Local<v8::String> &str, uint8_t **out, size_t *len)
+v8::Local<v8::Uint8Array> hessian_encode_string(const v8::Local<v8::String> &str, v8::Isolate *isolate)
 {
+	v8::EscapableHandleScope handle_scope(isolate);
 	size_t index = 0;
 	int length = str->Length();
 	int capacity = 3 * length + 10; // TODO 10?
-	*out = (uint8_t*)malloc(capacity);
-	if (NULL == *out) {
-		return 0;
-	}
+	v8::Local<v8::Uint8Array> ret = HessianPool::Get(isolate, capacity);
+	uint8_t* out = static_cast<uint8_t*>(ret->Buffer()->GetContents().Data()) + ret->ByteOffset();
 
 	// TODO
 	assert(length <= 0x8000);
 
 	if (length <= 31) {
-		(*out)[index++] = (uint8_t)(length);
+		out[index++] = (uint8_t)(length);
 	} else if (length <= 1023) {
-		(*out)[index++] = (uint8_t)(48 + (length >> 8));
+		out[index++] = (uint8_t)(48 + (length >> 8));
 		// Integer overflow and wrapping assumed
-		(*out)[index++] = (uint8_t)(length);
+		out[index++] = (uint8_t)(length);
 	} else {
-		(*out)[index++] = 'S';
-		(*out)[index++] = (uint8_t)((length >> 8));
+		out[index++] = 'S';
+		out[index++] = (uint8_t)((length >> 8));
 		// Integer overflow and wrapping assumed
-		(*out)[index++] = (uint8_t)(length);
+		out[index++] = (uint8_t)(length);
 	}
 
 	// TODO encoded as CESU-8
 	int flags = v8::String::HINT_MANY_WRITES_EXPECTED | v8::String::NO_NULL_TERMINATION | v8::String::REPLACE_INVALID_UTF8;
-	int nbytes = str->WriteUtf8((char *)(*out + index), capacity, NULL, flags);
-	*len = index + nbytes;
-	uint8_t *new_out = (uint8_t*)realloc(*out, *len);
-	if (NULL != new_out) {
-		*out = new_out;
-	}
-	return 1;
+	int nbytes = str->WriteUtf8(reinterpret_cast<char*>(out + index), capacity, NULL, flags);
+
+	assert(index + nbytes <= capacity);
+	return handle_scope.Escape(v8::Uint8Array::New(ret->Buffer(), ret->ByteOffset(), index + nbytes));
 }
 
 static short internal_decode_string(uint8_t * const buf, const size_t buf_length, uint8_t *out_str, size_t *out_length, short *is_last_chunk)

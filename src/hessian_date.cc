@@ -29,27 +29,22 @@ short hessian_decode_date(uint8_t * const buf, const size_t buf_length, const v8
 	return 0;
 }
 
-short hessian_encode_date(uint64_t milliEpoch, uint8_t **out, size_t *len)
+v8::Local<v8::Uint8Array> hessian_encode_date(const uint64_t milliEpoch, v8::Isolate *isolate)
 {
+	v8::EscapableHandleScope handle_scope(isolate);
 	if ((milliEpoch % 60000) == 0) {
 		uint64_t minutes = milliEpoch / 60000;
 		if (minutes <= 0x7fffffff) {
-			*len = 5;
-			*out = (uint8_t*)malloc(*len);
-			if (NULL == *out) {
-				return 0;
-			}
-			*out[0] = 0x4b;
-			*(int32_t *)(*out + 1) = htonl((uint32_t)minutes);
-			return 1;
+			v8::Local<v8::Uint8Array> ret = HessianPool::Get(isolate, 5);
+			uint8_t* out = static_cast<uint8_t*>(ret->Buffer()->GetContents().Data()) + ret->ByteOffset();
+			out[0] = 0x4b;
+			*(int32_t *)(out + 1) = htonl((uint32_t)minutes);
+			return handle_scope.Escape(ret);
 		}
 	}
-	*len = 9;
-	*out = (uint8_t*)malloc(*len);
-	if (NULL == *out) {
-		return 0;
-	}
-	*out[0] = 0x4a;
-	*(int64_t *)(*out + 1) = htonll(milliEpoch);
-	return 1;
+	v8::Local<v8::Uint8Array> ret = HessianPool::Get(isolate, 9);
+	uint8_t* out = static_cast<uint8_t*>(ret->Buffer()->GetContents().Data()) + ret->ByteOffset();
+	out[0] = 0x4a;
+	*(int64_t *)(out + 1) = htonll(milliEpoch);
+	return handle_scope.Escape(ret);
 }

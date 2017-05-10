@@ -48,38 +48,22 @@ var complexObject = {
 
 suite
 
-.add('Fast hessian2 encode: null', function() {
-  hessian.encode(null, '2.0');
-})
-
-// .add('hessian1 encode: number', function() {
-//   hessian.encode(1, '1.0');
-// })
 .add('Fast hessian2 encode: number', function() {
   hessian.encode(1, '2.0');
 })
 
-// // .add('hessian1 encode: date', function() {
-// //   hessian.encode(new Date(), '1.0');
-// // })
-// .add('Fast hessian2 encode: date', function() {
-//   hessian.encode(new Date(), '2.0');
-// })
-//
-// // .add('hessian1 encode: long', function() {
-// //   hessian.encode(java.long(300), '1.0');
-// // })
+.add('Fast hessian2 encode: date', function() {
+  hessian.encode(new Date(), '2.0');
+})
+
 // .add('Fast hessian2 encode: long', function() {
 //   hessian.encode(java.long(300), '2.0');
 // })
-//
-// // .add('hessian1 encode: string', function() {
-// //   hessian.encode('xxx1231231231231xxx123', '1.0');
-// // })
-// .add('Fast hessian2 encode: string', function() {
-//   hessian.encode('xxx1231231231231xxx123', '2.0');
-// })
-//
+
+.add('Fast hessian2 encode: string', function() {
+  hessian.encode('xxx1231231231231xxx123', '2.0');
+})
+
 // // .add('hessian1 encode: [1, 2, 3]', function() {
 // //   hessian.encode([1, 2, 3], '1.0');
 // // })
