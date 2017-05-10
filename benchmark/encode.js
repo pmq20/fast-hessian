@@ -48,6 +48,10 @@ var complexObject = {
 
 suite
 
+.add('Fast hessian2 encode: null', function() {
+  hessian.encode(null, '2.0');
+})
+
 // .add('hessian1 encode: number', function() {
 //   hessian.encode(1, '1.0');
 // })

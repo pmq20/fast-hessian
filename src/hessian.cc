@@ -7,40 +7,6 @@
 
 #include "hessian.h"
 
-#define HESSIAN_POOL_SIZE (8 * 1024)
-#define HESSIAN_POOL_SEG_SIZE (4 * 1024)
-
-v8::Persistent<v8::ArrayBuffer> hessian_pool;
-size_t hessian_pool_offset = 0;
-
-void hessian_create_pool(v8::Isolate *isolate)
-{
-	if (!hessian_pool.IsEmpty()) {
-		hessian_pool.SetWeak();
-	}
-	hessian_pool.Reset(isolate, v8::ArrayBuffer::New(isolate, HESSIAN_POOL_SIZE));
-	hessian_pool_offset = 0;
-}
-
-v8::Local<v8::Uint8Array> hessian_alloc(v8::Isolate *isolate, size_t size)
-{
-	v8::EscapableHandleScope handle_scope(isolate);
-	v8::Local<v8::ArrayBuffer> base;
-	v8::Local<v8::Uint8Array> ret;
-	if (size < HESSIAN_POOL_SEG_SIZE) {
-		if (size > (HESSIAN_POOL_SIZE - hessian_pool_offset)) {
-			hessian_create_pool(isolate);
-		}
-		base = hessian_pool.Get(isolate);
-		ret = v8::Uint8Array::New(base, hessian_pool_offset, size);
-		hessian_pool_offset += size;
-	} else {
-		base = v8::ArrayBuffer::New(isolate, size);
-		ret = v8::Uint8Array::New(base, 0, size);
-	}
-	return handle_scope.Escape(ret);
-}
-
 void hessian_encode(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
 	node::Environment* env = node::Environment::GetCurrent(args);
@@ -48,12 +14,12 @@ void hessian_encode(const v8::FunctionCallbackInfo<v8::Value>& args)
 
 	if (args[0]->IsNullOrUndefined()) {
 		ret = hessian_encode_null(env->isolate());
-	} else if (args[0]->IsNumber()) {
-		int64_t x = args[0]->IntegerValue();
+//	} else if (args[0]->IsNumber()) {
+//		int64_t x = args[0]->IntegerValue();
 //		if (x >= LONG_MAX || x < LONG_MIN) {
 //			ret = hessian_encode_long(x, env);
 //		} else {
-			ret = hessian_encode_int((int32_t)x, env->isolate());
+//			ret = hessian_encode_int((int32_t)x, env->isolate());
 //		}
 //	} else if (args[0]->IsDate()) {
 //		double x = args[0].As<v8::Date>()->ValueOf();

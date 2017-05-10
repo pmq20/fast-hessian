@@ -27,15 +27,13 @@
 #include <stdint.h>
 #include <stddef.h>
 
+#include "hessian/pool.h"
 #include "hessian/encode.h"
 #include "hessian/decode.h"
 
 #include "node.h"
 #include "env.h"
 #include "env-inl.h"
-
-void hessian_create_pool(v8::Isolate *isolate);
-v8::Local<v8::Uint8Array> hessian_alloc(v8::Isolate *isolate, size_t size);
 
 void hessian_encode(const v8::FunctionCallbackInfo<v8::Value>& args);
 void hessian_decode(const v8::FunctionCallbackInfo<v8::Value>& args);
