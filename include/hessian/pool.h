@@ -20,7 +20,7 @@ public:
     void MakeWeak();
     
 private:
-    static const size_t pool_size = /*128 */ 1024;
+    static const size_t pool_size = 128 * 1024;
     static const size_t in_pool_threshold = pool_size / 2;
     static_assert(in_pool_threshold <= pool_size, "in-pool threshold should be bound by pool size");
     static HessianPool *pool;
