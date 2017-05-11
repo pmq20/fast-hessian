@@ -25,7 +25,7 @@ private:
     static_assert(in_pool_threshold <= pool_size, "in-pool threshold should be bound by pool size");
     static HessianPool *pool;
     static void WeakCallback(const v8::WeakCallbackInfo<HessianPool>& data);
-    v8::Local<v8::Uint8Array> HessianPool::Allocate(size_t size);
+    v8::Local<v8::Uint8Array> Allocate(size_t size);
     v8::Isolate *isolate_;
     size_t offset_;
     v8::Persistent<v8::ArrayBuffer> ab_;
